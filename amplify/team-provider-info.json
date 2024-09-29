@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-stayfinder-dev-6e98c-authRole",
+      "UnauthRoleArn": "arn:aws:iam::388211918476:role/amplify-stayfinder-dev-6e98c-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::388211918476:role/amplify-stayfinder-dev-6e98c-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-stayfinder-dev-6e98c-deployment",
+      "UnauthRoleName": "amplify-stayfinder-dev-6e98c-unauthRole",
+      "StackName": "amplify-stayfinder-dev-6e98c",
+      "StackId": "arn:aws:cloudformation:us-east-1:388211918476:stack/amplify-stayfinder-dev-6e98c/aad6a520-754d-11ef-bd17-0afff295485b",
+      "AmplifyAppId": "d3n2x8775ereld"
+    },
+    "categories": {
+      "auth": {
+        "StayFinder": {}
+      }
+    }
+  }
+}
