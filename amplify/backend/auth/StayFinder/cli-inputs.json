@@ -3,7 +3,7 @@
   "cognitoConfig": {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "stayfi860055f0",
+    "resourceNameTruncated": "stayfi68593b97",
     "userPoolName": "StayFinder",
     "autoVerifiedAttributes": [
       "email"
@@ -30,15 +30,12 @@
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "StayFi860055f0_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "StayFi68593b97_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "860055f0",
+    "sharedId": "68593b97",
     "resourceName": "StayFinder",
     "authSelections": "identityPoolAndUserPool",
     "serviceName": "Cognito",
-    "usernameAttributes": [
-      "email"
-    ],
     "useDefault": "manual",
     "userPoolGroups": false,
     "userPoolGroupList": [],
