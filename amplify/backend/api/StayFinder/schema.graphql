@@ -3,4 +3,4 @@ type Usuarios @model @auth(rules: [{allow: public}]) {
   nombre: String
   apellido: String
   edad: Int
-} 
+}
