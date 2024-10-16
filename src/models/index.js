@@ -2,10 +2,24 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const ReservaEstado = {
+  "PENDIENTE": "PENDIENTE",
+  "CONFIRMADA": "CONFIRMADA",
+  "CANCELADA": "CANCELADA"
+};
 
+const UsuarioTipo = {
+  "ESTUDIANTE": "ESTUDIANTE",
+  "ANFITRION": "ANFITRION"
+};
 
-const { Usuarios } = initSchema(schema);
+const { Reserva, Ubicacion, Alojamiento, Usuario } = initSchema(schema);
 
 export {
-  Usuarios
+  Reserva,
+  Ubicacion,
+  Alojamiento,
+  Usuario,
+  ReservaEstado,
+  UsuarioTipo
 };

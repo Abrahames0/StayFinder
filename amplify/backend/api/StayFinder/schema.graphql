@@ -1,6 +1,51 @@
-type Usuarios @model @auth(rules: [{allow: public}]) {
+enum ReservaEstado {
+  PENDIENTE
+  CONFIRMADA
+  CANCELADA
+}
+
+type Reserva @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  fechaInicio: AWSDate 
+  fechaFin: AWSDate
+  estado: ReservaEstado
+  usuarioID: ID! @index(name: "byUsuario") 
+  alojamientoID: ID! @index(name: "byAlojamiento") 
+}
+
+type Ubicacion @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  direccion: String
+  ciudad: String
+  estado: String
+  codigoPostal: String
+  latitud: Float
+  longitud: Float
+}
+
+type Alojamiento @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  titulo: String
+  descripcion: String
+  precioPorMes: Float
+  fotos: [String]
+  reservas: [Reserva] @hasMany(indexName: "byAlojamiento", fields: ["id"])
+  anfitrionID: ID! @index(name: "byAnfitrion")
+  ubicacion: Ubicacion @hasOne
+}
+
+enum UsuarioTipo {
+  ESTUDIANTE
+  ANFITRION
+}
+
+type Usuario @model @auth(rules: [{ allow: public }]) {
   id: ID!
   nombre: String
   apellido: String
-  edad: Int
+  email: String
+  telefono: String
+  tipo: UsuarioTipo
+  reservas: [Reserva] @hasMany(indexName: "byUsuario", fields: ["id"])
+  alojamientos: [Alojamiento] @hasMany(indexName: "byAnfitrion", fields: ["id"])
 }
