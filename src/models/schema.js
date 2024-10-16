@@ -1,34 +1,13 @@
 export const schema = {
     "models": {
-        "Usuarios": {
-            "name": "Usuarios",
+        "Usuario": {
+            "name": "Usuario",
             "fields": {
                 "id": {
                     "name": "id",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
-                    "attributes": []
-                },
-                "nombre": {
-                    "name": "nombre",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "apellido": {
-                    "name": "apellido",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "edad": {
-                    "name": "edad",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -77,5 +56,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "8d956ca2840592f79e19263858b68fd0"
+    "version": "16261d4bfe2b572372e035f3eab88fe8"
 };

@@ -6,34 +6,28 @@ import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
 
 
-type EagerUsuarios = {
+type EagerUsuario = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Usuarios, 'id'>;
+    identifier: ManagedIdentifier<Usuario, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly nombre?: string | null;
-  readonly apellido?: string | null;
-  readonly edad?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-type LazyUsuarios = {
+type LazyUsuario = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Usuarios, 'id'>;
+    identifier: ManagedIdentifier<Usuario, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly nombre?: string | null;
-  readonly apellido?: string | null;
-  readonly edad?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
 
-export declare type Usuarios = LazyLoading extends LazyLoadingDisabled ? EagerUsuarios : LazyUsuarios
+export declare type Usuario = LazyLoading extends LazyLoadingDisabled ? EagerUsuario : LazyUsuario
 
-export declare const Usuarios: (new (init: ModelInit<Usuarios>) => Usuarios) & {
-  copyOf(source: Usuarios, mutator: (draft: MutableModel<Usuarios>) => MutableModel<Usuarios> | void): Usuarios;
+export declare const Usuario: (new (init: ModelInit<Usuario>) => Usuario) & {
+  copyOf(source: Usuario, mutator: (draft: MutableModel<Usuario>) => MutableModel<Usuario> | void): Usuario;
 }

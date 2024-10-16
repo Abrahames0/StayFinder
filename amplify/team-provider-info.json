@@ -1,18 +1,21 @@
 {
   "prod": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-stayfinder-prod-07b15-authRole",
-      "UnauthRoleArn": "arn:aws:iam::515966535070:role/amplify-stayfinder-prod-07b15-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::515966535070:role/amplify-stayfinder-prod-07b15-authRole",
+      "AuthRoleName": "amplify-stayfinder-prod-7d81d-authRole",
+      "UnauthRoleArn": "arn:aws:iam::515966535070:role/amplify-stayfinder-prod-7d81d-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::515966535070:role/amplify-stayfinder-prod-7d81d-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-stayfinder-prod-07b15-deployment",
-      "UnauthRoleName": "amplify-stayfinder-prod-07b15-unauthRole",
-      "StackName": "amplify-stayfinder-prod-07b15",
-      "StackId": "arn:aws:cloudformation:us-east-1:515966535070:stack/amplify-stayfinder-prod-07b15/59c91d10-875f-11ef-bc66-123740accb4d",
-      "AmplifyAppId": "d1nozd3hgucm0g"
+      "DeploymentBucketName": "amplify-stayfinder-prod-7d81d-deployment",
+      "UnauthRoleName": "amplify-stayfinder-prod-7d81d-unauthRole",
+      "StackName": "amplify-stayfinder-prod-7d81d",
+      "StackId": "arn:aws:cloudformation:us-east-1:515966535070:stack/amplify-stayfinder-prod-7d81d/7658c310-8b5e-11ef-8ce1-0affc618e897",
+      "AmplifyAppId": "d22myj3adyrnzp"
     },
     "categories": {
       "auth": {
+        "StayFinder": {}
+      },
+      "api": {
         "StayFinder": {}
       }
     }
