@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "StayFinder",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2024-11-07T05:20:16.156Z",
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authStayFinder",
+      "Outputs.UserPoolId"
+    ]
+  }
+}
