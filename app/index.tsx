@@ -1,31 +1,78 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { Amplify } from "aws-amplify";
-import { Authenticator, useAuthenticator } from "@aws-amplify/ui-react-native";
-import { Button, View } from "react-native";
+import { useAuthenticator, Authenticator } from "@aws-amplify/ui-react-native";
 import awsconfig from "../src/amplifyconfiguration.json";
+import NavigationTabs from "./navigation/NavigationTabs"; // Navegación principal
+import RegisterScreen from "./screens/RegisterScreen"; // Pantalla de registro
+import { DataStore } from "@aws-amplify/datastore";
+import { Usuario } from "../src/models";
 
 Amplify.configure(awsconfig);
 
-const SignOutButton = () => {
-  const { signOut } = useAuthenticator();
+const AppContent = () => {
+  const [loading, setLoading] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const { user, authStatus } = useAuthenticator(); // `authStatus` indica si está autenticado
 
-  return (
-    <View className="self-end m-2">
-      <Button onPress={signOut} title="Sign Out" />
-    </View>
-  );
+  useEffect(() => {
+    const checkUserRegistration = async () => {
+      try {
+        if (authStatus === "authenticated" && user) {
+          // Obtener el correo o ID alternativo
+          const email = user.signInDetails?.loginId || user.username;
+          console.log("Usuario autenticado con email o ID:", email);
+
+          if (!email) {
+            console.error("No se encontró un email válido para el usuario.");
+            return;
+          }
+
+          // Verificar si el usuario está registrado en DataStore
+          const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
+          setIsRegistered(users.length > 0);
+        }
+      } catch (err) {
+        console.error("Error verificando registro:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkUserRegistration();
+  }, [authStatus, user]);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Verificando sesión...</Text>
+      </View>
+    );
+  }
+
+  // Mostrar navegación si el usuario está registrado, o pantalla de registro
+  return isRegistered ? <NavigationTabs /> : <RegisterScreen />;
 };
 
 const App = () => {
   return (
     <Authenticator.Provider>
       <Authenticator>
-        <View className="p-4">
-          <SignOutButton />
-        </View>
+        <AppContent />
       </Authenticator>
     </Authenticator.Provider>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#fff",
+  },
+});
 
 export default App;
