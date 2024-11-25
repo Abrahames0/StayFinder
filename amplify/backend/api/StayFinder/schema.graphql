@@ -52,6 +52,7 @@ type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {
   fotoUsuario: String
   Alojaminetos: [Alojamineto] @hasMany(indexName: "byUsuario", fields: ["id"])
   Reservas: [Reserva] @hasMany(indexName: "byUsuario", fields: ["id"])
+  edad: String
 }
 
 type Ubicacion @model @auth(rules: [{allow: public}]) {

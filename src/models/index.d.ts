@@ -183,6 +183,7 @@ type EagerUsuario = {
   readonly fotoUsuario?: string | null;
   readonly Alojaminetos?: (Alojamineto | null)[] | null;
   readonly Reservas?: (Reserva | null)[] | null;
+  readonly edad?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -201,6 +202,7 @@ type LazyUsuario = {
   readonly fotoUsuario?: string | null;
   readonly Alojaminetos: AsyncCollection<Alojamineto>;
   readonly Reservas: AsyncCollection<Reserva>;
+  readonly edad?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

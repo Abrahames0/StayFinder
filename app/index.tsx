@@ -33,6 +33,8 @@ const AppContent = () => {
 
           // Verificar si el usuario está registrado en DataStore
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
+          console.log(users);
+          
           setIsRegistered(users.length > 0);
         }
       } catch (err) {

@@ -584,6 +584,13 @@ export const schema = {
                         ]
                     }
                 },
+                "edad": {
+                    "name": "edad",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -774,5 +781,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "1a7d9656e104c63af53c48c5dd37ece4"
+    "version": "dc5db4b2befcb5860421eaef8412428b"
 };
