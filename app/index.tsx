@@ -13,6 +13,7 @@ Amplify.configure(awsconfig);
 const AppContent = () => {
   const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const { user, authStatus } = useAuthenticator(); // `authStatus` indica si está autenticado
 
   useEffect(() => {
@@ -27,6 +28,8 @@ const AppContent = () => {
             console.error("No se encontró un email válido para el usuario.");
             return;
           }
+
+          setUserEmail(email); // Guardar el email para usarlo en el registro
 
           // Verificar si el usuario está registrado en DataStore
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
@@ -51,8 +54,12 @@ const AppContent = () => {
     );
   }
 
-  // Mostrar navegación si el usuario está registrado, o pantalla de registro
-  return isRegistered ? <NavigationTabs /> : <RegisterScreen />;
+  // Mostrar navegación si el usuario está registrado, o pantalla de registro con el email
+  return isRegistered ? (
+    <NavigationTabs />
+  ) : (
+    <RegisterScreen email={userEmail} />
+  );
 };
 
 const App = () => {
