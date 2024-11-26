@@ -61,7 +61,7 @@ const AppContent = () => {
     <NavigationTabs />
   ) : (
     <RegisterScreen email={userEmail} />
-  );
+  );  
 };
 
 const App = () => {
