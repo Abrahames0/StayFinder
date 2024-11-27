@@ -13,15 +13,16 @@ const TipoUsuario = {
   "ANFITRION": "ANFITRION"
 };
 
-const { Mensaje, Chat, Reserva, Alojamineto, Usuario, Ubicacion } = initSchema(schema);
+const { Mensaje, ChatRoom, Reserva, Alojamiento, Usuario, Ubicacion, UsuarioChatRoom } = initSchema(schema);
 
 export {
   Mensaje,
-  Chat,
+  ChatRoom,
   Reserva,
-  Alojamineto,
+  Alojamiento,
   Usuario,
   Ubicacion,
+  UsuarioChatRoom,
   EstadoReserva,
   TipoUsuario
 };
