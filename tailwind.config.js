@@ -7,7 +7,13 @@ module.exports = {
     "./app/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        manrope: ['Manrope-Regular', 'sans-serif'],
+        'manrope-bold': ['Manrope-Bold', 'sans-serif'],
+        'manrope-extrabold': ['Manrope-ExtraBold', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

@@ -10,59 +10,26 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "chatID": {
-                    "name": "chatID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "Chat": {
-                    "name": "Chat",
-                    "isArray": false,
-                    "type": {
-                        "model": "Chat"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "chatID"
-                        ]
-                    }
-                },
-                "contenido": {
-                    "name": "contenido",
+                "texto": {
+                    "name": "texto",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "timestamp": {
-                    "name": "timestamp",
+                "chatroomID": {
+                    "name": "chatroomID",
                     "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
+                    "type": "ID",
+                    "isRequired": true,
                     "attributes": []
                 },
-                "remitente": {
-                    "name": "remitente",
+                "usuarioID": {
+                    "name": "usuarioID",
                     "isArray": false,
-                    "type": {
-                        "model": "Usuario"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "mensajeRemitenteId"
-                        ]
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -79,13 +46,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "mensajeRemitenteId": {
-                    "name": "mensajeRemitenteId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -98,9 +58,18 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byChat",
+                        "name": "byChatRoom",
                         "fields": [
-                            "chatID"
+                            "chatroomID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUsuario",
+                        "fields": [
+                            "usuarioID"
                         ]
                     }
                 },
@@ -122,8 +91,8 @@ export const schema = {
                 }
             ]
         },
-        "Chat": {
-            "name": "Chat",
+        "ChatRoom": {
+            "name": "ChatRoom",
             "fields": {
                 "id": {
                     "name": "id",
@@ -132,8 +101,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "mensajes": {
-                    "name": "mensajes",
+                "Mensajes": {
+                    "name": "Mensajes",
                     "isArray": true,
                     "type": {
                         "model": "Mensaje"
@@ -144,15 +113,31 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "Chat"
+                            "chatroomID"
                         ]
                     }
                 },
-                "usuario1": {
-                    "name": "usuario1",
+                "usuarios": {
+                    "name": "usuarios",
+                    "isArray": true,
+                    "type": {
+                        "model": "UsuarioChatRoom"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "chatRoom"
+                        ]
+                    }
+                },
+                "LastMensaje": {
+                    "name": "LastMensaje",
                     "isArray": false,
                     "type": {
-                        "model": "Usuario"
+                        "model": "Mensaje"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -162,25 +147,7 @@ export const schema = {
                             "id"
                         ],
                         "targetNames": [
-                            "chatUsuario1Id"
-                        ]
-                    }
-                },
-                "usuario2": {
-                    "name": "usuario2",
-                    "isArray": false,
-                    "type": {
-                        "model": "Usuario"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "chatUsuario2Id"
+                            "chatRoomLastMensajeId"
                         ]
                     }
                 },
@@ -200,15 +167,8 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "chatUsuario1Id": {
-                    "name": "chatUsuario1Id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "chatUsuario2Id": {
-                    "name": "chatUsuario2Id",
+                "chatRoomLastMensajeId": {
+                    "name": "chatRoomLastMensajeId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -216,7 +176,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Chats",
+            "pluralName": "ChatRooms",
             "attributes": [
                 {
                     "type": "model",
@@ -273,8 +233,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "alojaminetoID": {
-                    "name": "alojaminetoID",
+                "alojamientoID": {
+                    "name": "alojamientoID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
@@ -329,9 +289,9 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byAlojamineto",
+                        "name": "byAlojamiento",
                         "fields": [
-                            "alojaminetoID"
+                            "alojamientoID"
                         ]
                     }
                 },
@@ -362,8 +322,8 @@ export const schema = {
                 }
             ]
         },
-        "Alojamineto": {
-            "name": "Alojamineto",
+        "Alojamiento": {
+            "name": "Alojamiento",
             "fields": {
                 "id": {
                     "name": "id",
@@ -386,8 +346,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "fotosAlojamineto": {
-                    "name": "fotosAlojamineto",
+                "fotosAlojamiento": {
+                    "name": "fotosAlojamiento",
                     "isArray": true,
                     "type": "String",
                     "isRequired": false,
@@ -401,14 +361,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "fotos": {
-                    "name": "fotos",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
                 "reservas": {
                     "name": "reservas",
                     "isArray": true,
@@ -421,15 +373,15 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "alojaminetoID"
+                            "alojamientoID"
                         ]
                     }
                 },
-                "usuarioID": {
-                    "name": "usuarioID",
+                "esRecomendado": {
+                    "name": "esRecomendado",
                     "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "Usuario": {
@@ -446,6 +398,13 @@ export const schema = {
                             "usuarioID"
                         ]
                     }
+                },
+                "usuarioID": {
+                    "name": "usuarioID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -465,7 +424,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Alojaminetos",
+            "pluralName": "Alojamientos",
             "attributes": [
                 {
                     "type": "model",
@@ -552,11 +511,11 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "Alojaminetos": {
-                    "name": "Alojaminetos",
+                "Alojamientos": {
+                    "name": "Alojamientos",
                     "isArray": true,
                     "type": {
-                        "model": "Alojamineto"
+                        "model": "Alojamiento"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -590,6 +549,38 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "Mensajes": {
+                    "name": "Mensajes",
+                    "isArray": true,
+                    "type": {
+                        "model": "Mensaje"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "usuarioID"
+                        ]
+                    }
+                },
+                "ChatRooms": {
+                    "name": "ChatRooms",
+                    "isArray": true,
+                    "type": {
+                        "model": "UsuarioChatRoom"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "usuario"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -694,11 +685,11 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "Alojamineto": {
-                    "name": "Alojamineto",
+                "Alojamiento": {
+                    "name": "Alojamiento",
                     "isArray": false,
                     "type": {
-                        "model": "Alojamineto"
+                        "model": "Alojamiento"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -708,7 +699,7 @@ export const schema = {
                             "id"
                         ],
                         "targetNames": [
-                            "ubicacionAlojaminetoId"
+                            "ubicacionAlojamientoId"
                         ]
                     }
                 },
@@ -728,8 +719,8 @@ export const schema = {
                     "attributes": [],
                     "isReadOnly": true
                 },
-                "ubicacionAlojaminetoId": {
-                    "name": "ubicacionAlojaminetoId",
+                "ubicacionAlojamientoId": {
+                    "name": "ubicacionAlojamientoId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -749,6 +740,145 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "UsuarioChatRoom": {
+            "name": "UsuarioChatRoom",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "chatRoomId": {
+                    "name": "chatRoomId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "usuarioId": {
+                    "name": "usuarioId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "chatRoom": {
+                    "name": "chatRoom",
+                    "isArray": false,
+                    "type": {
+                        "model": "ChatRoom"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "chatRoomId"
+                        ]
+                    }
+                },
+                "usuario": {
+                    "name": "usuario",
+                    "isArray": false,
+                    "type": {
+                        "model": "Usuario"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "usuarioId"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "UsuarioChatRooms",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byChatRoom",
+                        "fields": [
+                            "chatRoomId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUsuario",
+                        "fields": [
+                            "usuarioId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
                                 "operations": [
                                     "create",
                                     "update",
@@ -781,5 +911,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "dc5db4b2befcb5860421eaef8412428b"
+    "version": "ee4e7227eff7493f95a69d944869431d"
 };
