@@ -14,9 +14,10 @@ import { Usuario, TipoUsuario } from "../../src/models";
 
 interface RegisterProps {
   email: string | null; // Email recibido desde AppContent
+  onRegisterComplete: () => void;
 }
 
-const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
+const RegisterScreen: React.FC<RegisterProps> = ({ email,onRegisterComplete  }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [nombre, setNombre] = useState<string>("");
   const [apellido, setApellido] = useState<string>("");
@@ -26,11 +27,10 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
   // Función para capitalizar la primera letra de cada palabra en tiempo real
   const capitalizeWords = (text: string): string => {
     return text
-      .toLowerCase()
       .split(" ")
       .filter((word) => word.trim() !== "") // Evitar palabras vacías
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalizar cada palabra
+      .join(" "); // Volver a unir con espacios
   };
 
   const validateFields = (): boolean => {
@@ -111,8 +111,9 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
         placeholder="Nombres"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
         value={nombre}
-        onChangeText={(text) => setNombre(capitalizeWords(text))}
+        onChangeText={(text) => setNombre(capitalizeWords(text))} 
       />
+
       <TextInput
         placeholder="Apellidos"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
