@@ -386,8 +386,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "fotosAlojamineto": {
-                    "name": "fotosAlojamineto",
+                "fotosAlojamiento": {
+                    "name": "fotosAlojamiento",
                     "isArray": true,
                     "type": "String",
                     "isRequired": false,
@@ -400,14 +400,6 @@ export const schema = {
                     "type": "Float",
                     "isRequired": false,
                     "attributes": []
-                },
-                "fotos": {
-                    "name": "fotos",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
                 },
                 "reservas": {
                     "name": "reservas",
@@ -694,24 +686,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "Alojamineto": {
-                    "name": "Alojamineto",
-                    "isArray": false,
-                    "type": {
-                        "model": "Alojamineto"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "ubicacionAlojaminetoId"
-                        ]
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -727,13 +701,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "ubicacionAlojaminetoId": {
-                    "name": "ubicacionAlojaminetoId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -781,5 +748,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "dc5db4b2befcb5860421eaef8412428b"
+    "version": "d49d2bae3a914ccccf8ac7e90889a0e8"
 };

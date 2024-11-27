@@ -135,9 +135,8 @@ type EagerAlojamineto = {
   readonly id: string;
   readonly titulo?: string | null;
   readonly descripcion?: string | null;
-  readonly fotosAlojamineto?: (string | null)[] | null;
+  readonly fotosAlojamiento?: (string | null)[] | null;
   readonly precioMensual?: number | null;
-  readonly fotos?: (string | null)[] | null;
   readonly reservas?: (Reserva | null)[] | null;
   readonly usuarioID: string;
   readonly Usuario?: Usuario | null;
@@ -153,9 +152,8 @@ type LazyAlojamineto = {
   readonly id: string;
   readonly titulo?: string | null;
   readonly descripcion?: string | null;
-  readonly fotosAlojamineto?: (string | null)[] | null;
+  readonly fotosAlojamiento?: (string | null)[] | null;
   readonly precioMensual?: number | null;
-  readonly fotos?: (string | null)[] | null;
   readonly reservas: AsyncCollection<Reserva>;
   readonly usuarioID: string;
   readonly Usuario: AsyncItem<Usuario | undefined>;
@@ -225,10 +223,8 @@ type EagerUbicacion = {
   readonly codigoPostal?: string | null;
   readonly latitud?: number | null;
   readonly longitud?: number | null;
-  readonly Alojamineto?: Alojamineto | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly ubicacionAlojaminetoId?: string | null;
 }
 
 type LazyUbicacion = {
@@ -243,10 +239,8 @@ type LazyUbicacion = {
   readonly codigoPostal?: string | null;
   readonly latitud?: number | null;
   readonly longitud?: number | null;
-  readonly Alojamineto: AsyncItem<Alojamineto | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly ubicacionAlojaminetoId?: string | null;
 }
 
 export declare type Ubicacion = LazyLoading extends LazyLoadingDisabled ? EagerUbicacion : LazyUbicacion

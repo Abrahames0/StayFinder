@@ -11,6 +11,13 @@ import { Usuario } from "../src/models";
 Amplify.configure(awsconfig);
 
 const AppContent = () => {
+  useEffect(() => {
+    const clearDataStore = async () => {
+      await DataStore.clear();
+    };
+    clearDataStore();
+  }, []);
+  
   const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);

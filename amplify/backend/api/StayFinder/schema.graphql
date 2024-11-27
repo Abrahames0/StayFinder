@@ -34,9 +34,8 @@ type Alojamineto @model @auth(rules: [{allow: public}]) {
   id: ID!
   titulo: String
   descripcion: String
-  fotosAlojamineto: [String]
+  fotosAlojamiento: [String]
   precioMensual: Float
-  fotos: [String]
   reservas: [Reserva] @hasMany(indexName: "byAlojamineto", fields: ["id"])
   usuarioID: ID! @index(name: "byUsuario")
   Usuario: Usuario @belongsTo(fields: ["usuarioID"])
@@ -63,7 +62,6 @@ type Ubicacion @model @auth(rules: [{allow: public}]) {
   codigoPostal: String
   latitud: Float
   longitud: Float
-  Alojamineto: Alojamineto @hasOne
 }
 
 enum TipoUsuario {

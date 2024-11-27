@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -22,18 +23,41 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
   const [edad, setEdad] = useState<string>(""); // Inicia vacío para mostrar el placeholder
   const [telefono, setTelefono] = useState<string>("");
 
+  // Función para capitalizar la primera letra de cada palabra en tiempo real
+  const capitalizeWords = (text: string): string => {
+    return text
+      .toLowerCase()
+      .split(" ")
+      .filter((word) => word.trim() !== "") // Evitar palabras vacías
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const validateFields = (): boolean => {
+    // Validar que no haya campos vacíos
+    if (!nombre.trim() || !apellido.trim() || !telefono.trim() || !edad) {
+      Alert.alert("Error", "Por favor completa todos los campos.");
+      return false;
+    }
+
+    // Validar que el teléfono tenga 10 dígitos
+    if (!/^\d{10}$/.test(telefono)) {
+      Alert.alert("Error", "El número de teléfono debe tener 10 dígitos.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSave = async (): Promise<void> => {
     try {
-      // Validaciones previas
       if (!email) {
         console.error("No se encontró un email válido para guardar.");
         return;
       }
 
-      if (!nombre || !apellido || !telefono || !edad || edad === "") {
-        console.error("Por favor, completa todos los campos antes de guardar.");
-        return;
-      }
+      // Validar campos antes de guardar
+      if (!validateFields()) return;
 
       // Guardar los datos en DataStore
       await DataStore.save(
@@ -49,6 +73,7 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
       );
 
       console.log("Usuario guardado con éxito");
+      Alert.alert("Éxito", "Usuario registrado correctamente.");
 
       // Reinicia los campos del formulario
       setProfileImage(null);
@@ -58,6 +83,7 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
       setTelefono("");
     } catch (error) {
       console.error("Error al guardar el usuario:", error);
+      Alert.alert("Error", "Hubo un problema al guardar el usuario.");
     }
   };
 
@@ -85,13 +111,13 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
         placeholder="Nombres"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
         value={nombre}
-        onChangeText={setNombre}
+        onChangeText={(text) => setNombre(capitalizeWords(text))}
       />
       <TextInput
         placeholder="Apellidos"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
         value={apellido}
-        onChangeText={setApellido}
+        onChangeText={(text) => setApellido(capitalizeWords(text))}
       />
 
       {/* Selector de edad */}
@@ -113,7 +139,8 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email }) => {
         keyboardType="phone-pad"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
         value={telefono}
-        onChangeText={setTelefono}
+        onChangeText={(text) => setTelefono(text.replace(/\D/g, ""))} // Solo permite números
+        maxLength={10}
       />
 
       {/* Identificación */}
