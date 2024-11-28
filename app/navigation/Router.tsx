@@ -11,7 +11,7 @@ export type RootStackParamList = {
   Tabs: undefined; // Navegación de pestañas
   Chat: { chatRoomId: string }; // Ruta para el chat, con parámetro
   Perfil: undefined; // Ruta para configuración
-  Mensajes: { chatRoomId: string; currentUserId: string};
+  Mensajes: { chatRoomId: string; currentUserId: string, nameSelected: string};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

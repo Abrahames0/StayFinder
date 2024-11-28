@@ -151,6 +151,13 @@ export const schema = {
                         ]
                     }
                 },
+                "chatKey": {
+                    "name": "chatKey",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -377,11 +384,11 @@ export const schema = {
                         ]
                     }
                 },
-                "usuarioID": {
-                    "name": "usuarioID",
+                "esRecomendado": {
+                    "name": "esRecomendado",
                     "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
+                    "type": "Boolean",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "Usuario": {
@@ -396,6 +403,59 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetNames": [
                             "usuarioID"
+                        ]
+                    }
+                },
+                "banos": {
+                    "name": "banos",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reglas": {
+                    "name": "reglas",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "wifi": {
+                    "name": "wifi",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "usuarioID": {
+                    "name": "usuarioID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tiempoRenta": {
+                    "name": "tiempoRenta",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "ubicacion": {
+                    "name": "ubicacion",
+                    "isArray": false,
+                    "type": {
+                        "model": "Ubicacion"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "alojamientoUbicacionId"
                         ]
                     }
                 },
@@ -414,6 +474,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "alojamientoUbicacionId": {
+                    "name": "alojamientoUbicacionId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -678,23 +745,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "Alojamiento": {
-                    "name": "Alojamiento",
+                "alojamientoID": {
+                    "name": "alojamientoID",
                     "isArray": false,
-                    "type": {
-                        "model": "Alojamiento"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "ubicacionAlojamientoId"
-                        ]
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -711,13 +767,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "ubicacionAlojamientoId": {
-                    "name": "ubicacionAlojamientoId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -726,6 +775,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byAlojamiento",
+                        "fields": [
+                            "alojamientoID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -904,5 +962,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "41813635ee6a7497cd9cf1b00dd28e58"
+    "version": "d1dd15e5022c0ac8d5f76d2c8838d288"
 };

@@ -9,6 +9,7 @@ import { RootStackParamList } from "../navigation/Router";
 const MessagesScreen = () => {
   const { user } = useUser();
   const [currentUserID, setCurrentUserID] = useState<string>("");
+  const [inChat, setinChat] = useState<boolean>(false);
 
   // Accede al parámetro `chatRoomId` si está presente en la navegación
   const route = useRoute<RouteProp<RootStackParamList, "Mensajes">>();
@@ -18,14 +19,16 @@ const MessagesScreen = () => {
     if (user?.id) {
       setCurrentUserID(user.id); // Asignar el ID del usuario autenticado
     }
+    console.log(user);
+    
   }, [user]);
 
   return (
     <View style={{ flex: 1 }}>
-  {chatRoomId ? (
-    <ListMensajes/>
+  {inChat ? (
+    <ListMensajes setinChat={setinChat}/>
   ) : (
-    <Contacts currentUserId={currentUserID} />
+    <Contacts currentUserId={currentUserID} setinChat={setinChat}/>
   )}
 </View>
 
