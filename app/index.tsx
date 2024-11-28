@@ -7,11 +7,6 @@ import NavigationTabs from "./navigation/NavigationTabs";
 import RegisterScreen from "./screens/RegisterScreen";
 import { DataStore } from "@aws-amplify/datastore";
 import { Usuario } from "../src/models";
-import { LogBox } from "react-native";
-LogBox.ignoreLogs([
-  "Reachability - subscribing to reachability",
-  "Reachability - Notifying reachability change true",
-]);
 
 Amplify.configure(awsconfig);
 
@@ -29,6 +24,8 @@ const AppContent = () => {
           const email = user.signInDetails?.loginId || user.username;
           setUserEmail(email);
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
+          console.log(users);
+          
           setIsRegistered(users.length > 0);
         }
       } catch (err) {
