@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Text,
   RefreshControl,
+  Animated,
 } from "react-native";
 import { styled } from "nativewind";
 import { DataStore } from "@aws-amplify/datastore";
@@ -14,6 +15,7 @@ import SearchBarExplore from "@/components/SearchBarExplore";
 import RecommendationsList from "@/components/RecommendationsList";
 import AdBanner from "@/components/AdBanner"; // Opcional, para intercalar anuncios
 import { Alojamiento } from "@/src/models";
+import PropertyModal from "@/components/PropertyModal";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -24,6 +26,10 @@ const ExploreScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedProperty, setSelectedProperty] = useState<Alojamiento | null>(null);
+
+  const [slideAnim] = useState(new Animated.Value(200)); // Animación de deslizamiento desde abajo
 
   const loadAlojamientos = async (isRefresh = false) => {
     try {
@@ -46,7 +52,26 @@ const ExploreScreen = () => {
       if (!isRefresh) setIsLoading(false);
       else setIsRefreshing(false);
     }
-  };  
+  }; 
+  
+    // Mostrar el modal
+    const showModal = (property: Alojamiento) => {
+      setSelectedProperty(property);
+      setModalVisible(true);
+    
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    };
+  
+    // Cerrar el modal
+    const hideModal = () => {
+      Animated.spring(slideAnim, {
+        toValue: 300,
+        useNativeDriver: true,
+      }).start(() => setModalVisible(false));
+    };
 
   // Suscripción para actualizaciones en tiempo real
   useEffect(() => {
@@ -95,16 +120,17 @@ const ExploreScreen = () => {
       item.fotosAlojamiento && item.fotosAlojamiento.length > 0
         ? item.fotosAlojamiento[0]
         : "https://via.placeholder.com/300x300";
-
+  
     return (
       <PropertyCard
         title={title}
         description={description}
         price={price}
-        image={image}
+        image={image || "https://via.placeholder.com/300x300"} // Asegúrate de que siempre sea un string
+        onPress={() => showModal(item)}
       />
     );
-  };
+  };  
 
   const renderList = ({ item }: { item: any }) => {
     if (item.type === "property") {
@@ -209,6 +235,14 @@ const ExploreScreen = () => {
           />
         </>
       )}
+      {/* Modal */}
+      <PropertyModal
+        visible={modalVisible}
+        onClose={hideModal}
+        selectedProperty={selectedProperty}
+        slideAnim={slideAnim}
+      />
+
     </StyledView>
   );
 };
