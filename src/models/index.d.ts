@@ -56,6 +56,7 @@ type EagerChatRoom = {
   readonly Mensajes?: (Mensaje | null)[] | null;
   readonly usuarios?: (UsuarioChatRoom | null)[] | null;
   readonly LastMensaje?: Mensaje | null;
+  readonly chatKey?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly chatRoomLastMensajeId?: string | null;
@@ -70,6 +71,7 @@ type LazyChatRoom = {
   readonly Mensajes: AsyncCollection<Mensaje>;
   readonly usuarios: AsyncCollection<UsuarioChatRoom>;
   readonly LastMensaje: AsyncItem<Mensaje | undefined>;
+  readonly chatKey?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly chatRoomLastMensajeId?: string | null;
@@ -132,7 +134,12 @@ type EagerAlojamiento = {
   readonly reservas?: (Reserva | null)[] | null;
   readonly esRecomendado?: boolean | null;
   readonly Usuario?: Usuario | null;
+  readonly banos?: string | null;
+  readonly camas?: string | null;
+  readonly wifi?: string | null;
+  readonly tiempoRenta?: string | null;
   readonly usuarioID: string;
+  readonly reglas?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -150,7 +157,12 @@ type LazyAlojamiento = {
   readonly reservas: AsyncCollection<Reserva>;
   readonly esRecomendado?: boolean | null;
   readonly Usuario: AsyncItem<Usuario | undefined>;
+  readonly banos?: string | null;
+  readonly camas?: string | null;
+  readonly wifi?: string | null;
+  readonly tiempoRenta?: string | null;
   readonly usuarioID: string;
+  readonly reglas?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -222,6 +234,7 @@ type EagerUbicacion = {
   readonly latitud?: number | null;
   readonly longitud?: number | null;
   readonly Alojamiento?: Alojamiento | null;
+  readonly AlojamientoID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly ubicacionAlojamientoId?: string | null;
@@ -240,6 +253,7 @@ type LazyUbicacion = {
   readonly latitud?: number | null;
   readonly longitud?: number | null;
   readonly Alojamiento: AsyncItem<Alojamiento | undefined>;
+  readonly AlojamientoID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly ubicacionAlojamientoId?: string | null;

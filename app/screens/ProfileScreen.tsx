@@ -120,7 +120,7 @@ const ProfileScreen: React.FC = () => {
       <View className="mt-8 space-y-4 items-center">
         {/* Botón 1 */}
         <TouchableOpacity
-          className="flex-row items-center justify-between rounded-full px-4 py-2 w-48 shadow-md"
+          className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
           style={{ backgroundColor: "#DF96F9" }}
         >
           <Text className="text-black font-semibold text-sm text-center">
@@ -131,7 +131,7 @@ const ProfileScreen: React.FC = () => {
 
         {/* Botón 2 */}
         <TouchableOpacity
-          className="flex-row items-center justify-between rounded-full px-4 py-2 w-48 shadow-md"
+          className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
           style={{ backgroundColor: "#DF96F9" }}
         >
           <Text className="text-black font-semibold text-sm text-center">

@@ -151,6 +151,13 @@ export const schema = {
                         ]
                     }
                 },
+                "chatKey": {
+                    "name": "chatKey",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -399,11 +406,46 @@ export const schema = {
                         ]
                     }
                 },
+                "banos": {
+                    "name": "banos",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "camas": {
+                    "name": "camas",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "wifi": {
+                    "name": "wifi",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "tiempoRenta": {
+                    "name": "tiempoRenta",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "usuarioID": {
                     "name": "usuarioID",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "reglas": {
+                    "name": "reglas",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -703,6 +745,13 @@ export const schema = {
                         ]
                     }
                 },
+                "AlojamientoID": {
+                    "name": "AlojamientoID",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -911,5 +960,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ee4e7227eff7493f95a69d944869431d"
+    "version": "affe3b8c3eba30b61b727a7a3f000161"
 };

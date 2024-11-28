@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3stayfinderstorage771fbe21",
+  "bucketName": "stayfinder-storage-771fbe21",
+  "policyUUID": "c281a9df",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ",
+    "CREATE_AND_UPDATE",
+    "DELETE"
+  ]
+}
