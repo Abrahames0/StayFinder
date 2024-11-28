@@ -7,6 +7,10 @@ import NavigationTabs from "./navigation/NavigationTabs";
 import RegisterScreen from "./screens/RegisterScreen";
 import { DataStore } from "@aws-amplify/datastore";
 import { Usuario } from "../src/models";
+import { LazyUsuario } from "../src/models";
+import { UserProvider } from "@/components/hooks/UserContext";
+import { useUser } from "@/components/hooks/UserContext";
+import Router from "./navigation/Router";
 
 Amplify.configure(awsconfig);
 
@@ -15,7 +19,8 @@ const AppContent = () => {
   const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const { user, authStatus } = useAuthenticator();
+  const { setUser } = useUser(); // Obtenemos setUser del contexto
+  const { user, authStatus } = useAuthenticator(); // `authStatus` indica si está autenticado
 
   useEffect(() => {
     const checkUserRegistration = async () => {
@@ -24,9 +29,14 @@ const AppContent = () => {
           const email = user.signInDetails?.loginId || user.username;
           setUserEmail(email);
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
-          console.log(users);
+          // console.log(users[0]);
           
-          setIsRegistered(users.length > 0);
+          if (users.length > 0) {
+            setUser(users[0]); // Establecer usuario en el contexto
+            setIsRegistered(true);
+          } else {
+            setIsRegistered(false);
+          }
         }
       } catch (err) {
         console.error("Error verificando registro:", err);
@@ -52,7 +62,7 @@ const AppContent = () => {
   }
 
   return isRegistered ? (
-    <NavigationTabs />
+    <Router/>
   ) : (
     <RegisterScreen email={userEmail} onRegisterComplete={handleRegisterComplete} />
   );
@@ -62,7 +72,9 @@ const App = () => {
   return (
     <Authenticator.Provider>
       <Authenticator>
-        <AppContent />
+        <UserProvider>
+          <AppContent />
+        </UserProvider>
       </Authenticator>
     </Authenticator.Provider>
   );

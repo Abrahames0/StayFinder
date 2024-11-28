@@ -68,7 +68,7 @@ type Ubicacion @model @auth(rules: [{allow: public}]) {
   codigoPostal: String
   latitud: Float
   longitud: Float
-  Alojamiento: Alojamiento @hasOne
+  alojamientoID: ID! @index(name: "byAlojamiento")
 }
 
 enum TipoUsuario {

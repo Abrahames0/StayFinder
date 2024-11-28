@@ -456,6 +456,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "alojamientoUbicacionId": {
+                    "name": "alojamientoUbicacionId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -720,23 +727,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "Alojamiento": {
-                    "name": "Alojamiento",
+                "alojamientoID": {
+                    "name": "alojamientoID",
                     "isArray": false,
-                    "type": {
-                        "model": "Alojamiento"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "ubicacionAlojamientoId"
-                        ]
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -753,13 +749,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "ubicacionAlojamientoId": {
-                    "name": "ubicacionAlojamientoId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -768,6 +757,15 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byAlojamiento",
+                        "fields": [
+                            "alojamientoID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
