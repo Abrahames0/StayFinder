@@ -1,17 +1,15 @@
 type Mensaje @model @auth(rules: [{allow: public}]) {
   id: ID!
-  chatID: ID! @index(name: "byChat")
-  Chat: Chat @belongsTo(fields: ["chatID"])
-  contenido: String
-  timestamp: AWSDateTime
-  remitente: Usuario @hasOne
+  texto: String
+  chatroomID: ID! @index(name: "byChatRoom")
+  usuarioID: ID! @index(name: "byUsuario")
 }
 
-type Chat @model @auth(rules: [{allow: public}]) {
+type ChatRoom @model @auth(rules: [{allow: public}]) {
   id: ID!
-  mensajes: [Mensaje] @hasMany(indexName: "byChat", fields: ["id"])
-  usuario1: Usuario @hasOne
-  usuario2: Usuario @hasOne
+  Mensajes: [Mensaje] @hasMany(indexName: "byChatRoom", fields: ["id"])
+  usuarios: [Usuario] @manyToMany(relationName: "UsuarioChatRoom")
+  LastMensaje: Mensaje @hasOne
 }
 
 enum EstadoReserva {
@@ -25,19 +23,18 @@ type Reserva @model @auth(rules: [{allow: public}]) {
   fechaInicio: AWSDate
   fechaFin: AWSDate
   estado: EstadoReserva
-  alojaminetoID: ID! @index(name: "byAlojamineto")
+  alojamientoID: ID! @index(name: "byAlojamiento")
   usuarioID: ID! @index(name: "byUsuario")
   Usuario: Usuario @belongsTo(fields: ["usuarioID"])
 }
 
-type Alojamineto @model @auth(rules: [{allow: public}]) {
+type Alojamiento @model @auth(rules: [{allow: public}]) {
   id: ID!
   titulo: String
   descripcion: String
-  fotosAlojamineto: [String]
+  fotosAlojamiento: [String]
   precioMensual: Float
-  fotos: [String]
-  reservas: [Reserva] @hasMany(indexName: "byAlojamineto", fields: ["id"])
+  reservas: [Reserva] @hasMany(indexName: "byAlojamiento", fields: ["id"])
   usuarioID: ID! @index(name: "byUsuario")
   Usuario: Usuario @belongsTo(fields: ["usuarioID"])
 }
@@ -50,9 +47,11 @@ type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {
   telefono: String
   tipo: TipoUsuario
   fotoUsuario: String
-  Alojaminetos: [Alojamineto] @hasMany(indexName: "byUsuario", fields: ["id"])
+  Alojamientos: [Alojamiento] @hasMany(indexName: "byUsuario", fields: ["id"])
   Reservas: [Reserva] @hasMany(indexName: "byUsuario", fields: ["id"])
   edad: String
+  Mensajes: [Mensaje] @hasMany(indexName: "byUsuario", fields: ["id"])
+  ChatRooms: [ChatRoom] @manyToMany(relationName: "UsuarioChatRoom")
 }
 
 type Ubicacion @model @auth(rules: [{allow: public}]) {
@@ -63,7 +62,7 @@ type Ubicacion @model @auth(rules: [{allow: public}]) {
   codigoPostal: String
   latitud: Float
   longitud: Float
-  Alojamineto: Alojamineto @hasOne
+  Alojamiento: Alojamiento @hasOne
 }
 
 enum TipoUsuario {

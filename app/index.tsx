@@ -7,6 +7,10 @@ import NavigationTabs from "./navigation/NavigationTabs"; // Navegación princip
 import RegisterScreen from "./screens/RegisterScreen"; // Pantalla de registro
 import { DataStore } from "@aws-amplify/datastore";
 import { Usuario } from "../src/models";
+import { LazyUsuario } from "../src/models";
+import { UserProvider } from "@/components/hooks/UserContext";
+import { useUser } from "@/components/hooks/UserContext";
+import Router from "./navigation/Router";
 
 Amplify.configure(awsconfig);
 
@@ -14,28 +18,25 @@ const AppContent = () => {
   const [loading, setLoading] = useState(true);
   const [isRegistered, setIsRegistered] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const { setUser } = useUser(); // Obtenemos setUser del contexto
   const { user, authStatus } = useAuthenticator(); // `authStatus` indica si está autenticado
 
   useEffect(() => {
     const checkUserRegistration = async () => {
       try {
         if (authStatus === "authenticated" && user) {
-          // Obtener el correo o ID alternativo
           const email = user.signInDetails?.loginId || user.username;
-          console.log("Usuario autenticado con email o ID:", email);
+          setUserEmail(email);
 
-          if (!email) {
-            console.error("No se encontró un email válido para el usuario.");
-            return;
-          }
-
-          setUserEmail(email); // Guardar el email para usarlo en el registro
-
-          // Verificar si el usuario está registrado en DataStore
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
-          console.log(users);
+          // console.log(users[0]);
           
-          setIsRegistered(users.length > 0);
+          if (users.length > 0) {
+            setUser(users[0]); // Establecer usuario en el contexto
+            setIsRegistered(true);
+          } else {
+            setIsRegistered(false);
+          }
         }
       } catch (err) {
         console.error("Error verificando registro:", err);
@@ -46,6 +47,7 @@ const AppContent = () => {
 
     checkUserRegistration();
   }, [authStatus, user]);
+
 
   if (loading) {
     return (
@@ -58,7 +60,7 @@ const AppContent = () => {
 
   // Mostrar navegación si el usuario está registrado, o pantalla de registro con el email
   return isRegistered ? (
-    <NavigationTabs />
+    <Router/>
   ) : (
     <RegisterScreen email={userEmail} />
   );  
@@ -68,7 +70,9 @@ const App = () => {
   return (
     <Authenticator.Provider>
       <Authenticator>
-        <AppContent />
+        <UserProvider>
+          <AppContent />
+        </UserProvider>
       </Authenticator>
     </Authenticator.Provider>
   );

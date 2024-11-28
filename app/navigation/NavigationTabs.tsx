@@ -8,11 +8,12 @@ import MessagesScreen from "../screens/MessagesScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { Text } from "react-native";
 import { styled } from "nativewind";
+import { Usuario } from "@/src/models";
 
 type TabParamList = {
   Explorar: undefined;
   Mapa: undefined;
-  Mensajes: undefined;
+  Mensajes: { chatRoomId?: string };
   Perfil: undefined;
 };
 
@@ -20,7 +21,8 @@ const Tab = createBottomTabNavigator<TabParamList>();
 
 const TabText = styled(Text);
 
-const NavigationTabs = () => {
+const NavigationTabs = ( )  => {
+ 
   return (
     <Tab.Navigator
       screenOptions={({ route }: { route: RouteProp<TabParamList, keyof TabParamList> }) => {
