@@ -39,10 +39,11 @@ type Alojamiento @model @auth(rules: [{allow: public}]) {
   esRecomendado: Boolean
   Usuario: Usuario @belongsTo(fields: ["usuarioID"])
   banos: String
-  reglas: String
+  camas: String
   wifi: String
-  usuarioID: ID! @index(name: "byUsuario")
   tiempoRenta: String
+  usuarioID: ID! @index(name: "byUsuario")
+  reglas: String
 }
 
 type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {
@@ -68,7 +69,8 @@ type Ubicacion @model @auth(rules: [{allow: public}]) {
   codigoPostal: String
   latitud: Float
   longitud: Float
-  alojamientoID: ID! @index(name: "byAlojamiento")
+  Alojamiento: Alojamiento @hasOne
+  AlojamientoID: String
 }
 
 enum TipoUsuario {

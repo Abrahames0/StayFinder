@@ -135,13 +135,13 @@ type EagerAlojamiento = {
   readonly esRecomendado?: boolean | null;
   readonly Usuario?: Usuario | null;
   readonly banos?: string | null;
-  readonly reglas?: string | null;
+  readonly camas?: string | null;
   readonly wifi?: string | null;
-  readonly usuarioID: string;
   readonly tiempoRenta?: string | null;
+  readonly usuarioID: string;
+  readonly reglas?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly alojamientoUbicacionId?: string | null;
 }
 
 type LazyAlojamiento = {
@@ -158,13 +158,13 @@ type LazyAlojamiento = {
   readonly esRecomendado?: boolean | null;
   readonly Usuario: AsyncItem<Usuario | undefined>;
   readonly banos?: string | null;
-  readonly reglas?: string | null;
+  readonly camas?: string | null;
   readonly wifi?: string | null;
-  readonly usuarioID: string;
   readonly tiempoRenta?: string | null;
+  readonly usuarioID: string;
+  readonly reglas?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly alojamientoUbicacionId?: string | null;
 }
 
 export declare type Alojamiento = LazyLoading extends LazyLoadingDisabled ? EagerAlojamiento : LazyAlojamiento
@@ -233,9 +233,11 @@ type EagerUbicacion = {
   readonly codigoPostal?: string | null;
   readonly latitud?: number | null;
   readonly longitud?: number | null;
-  readonly alojamientoID: string;
+  readonly Alojamiento?: Alojamiento | null;
+  readonly AlojamientoID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly ubicacionAlojamientoId?: string | null;
 }
 
 type LazyUbicacion = {
@@ -250,9 +252,11 @@ type LazyUbicacion = {
   readonly codigoPostal?: string | null;
   readonly latitud?: number | null;
   readonly longitud?: number | null;
-  readonly alojamientoID: string;
+  readonly Alojamiento: AsyncItem<Alojamiento | undefined>;
+  readonly AlojamientoID?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
+  readonly ubicacionAlojamientoId?: string | null;
 }
 
 export declare type Ubicacion = LazyLoading extends LazyLoadingDisabled ? EagerUbicacion : LazyUbicacion
