@@ -3,8 +3,8 @@ import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { Amplify } from "aws-amplify";
 import { useAuthenticator, Authenticator } from "@aws-amplify/ui-react-native";
 import awsconfig from "../src/amplifyconfiguration.json";
-import NavigationTabs from "./navigation/NavigationTabs"; // Navegación principal
-import RegisterScreen from "./screens/RegisterScreen"; // Pantalla de registro
+import NavigationTabs from "./navigation/NavigationTabs";
+import RegisterScreen from "./screens/RegisterScreen";
 import { DataStore } from "@aws-amplify/datastore";
 import { Usuario } from "../src/models";
 import { LazyUsuario } from "../src/models";
@@ -13,6 +13,7 @@ import { useUser } from "@/components/hooks/UserContext";
 import Router from "./navigation/Router";
 
 Amplify.configure(awsconfig);
+
 
 const AppContent = () => {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,6 @@ const AppContent = () => {
         if (authStatus === "authenticated" && user) {
           const email = user.signInDetails?.loginId || user.username;
           setUserEmail(email);
-
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
           // console.log(users[0]);
           
@@ -48,6 +48,9 @@ const AppContent = () => {
     checkUserRegistration();
   }, [authStatus, user]);
 
+  const handleRegisterComplete = () => {
+    setIsRegistered(true);
+  };
 
   if (loading) {
     return (
@@ -58,12 +61,11 @@ const AppContent = () => {
     );
   }
 
-  // Mostrar navegación si el usuario está registrado, o pantalla de registro con el email
   return isRegistered ? (
     <Router/>
   ) : (
-    <RegisterScreen email={userEmail} />
-  );  
+    <RegisterScreen email={userEmail} onRegisterComplete={handleRegisterComplete} />
+  );
 };
 
 const App = () => {
