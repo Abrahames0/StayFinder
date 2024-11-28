@@ -17,20 +17,21 @@ interface RegisterProps {
   onRegisterComplete: () => void;
 }
 
-const RegisterScreen: React.FC<RegisterProps> = ({ email,onRegisterComplete  }) => {
+const RegisterScreen: React.FC<RegisterProps> = ({ email, onRegisterComplete }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [nombre, setNombre] = useState<string>("");
   const [apellido, setApellido] = useState<string>("");
   const [edad, setEdad] = useState<string>(""); // Inicia vacío para mostrar el placeholder
   const [telefono, setTelefono] = useState<string>("");
 
-  // Función para capitalizar la primera letra de cada palabra en tiempo real
+  // Función para capitalizar la primera letra de cada palabra
   const capitalizeWords = (text: string): string => {
     return text
       .split(" ")
-      .filter((word) => word.trim() !== "") // Evitar palabras vacías
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalizar cada palabra
-      .join(" "); // Volver a unir con espacios
+      .map((word) =>
+        word.trim() !== "" ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() : word
+      )
+      .join(" ");
   };
 
   const validateFields = (): boolean => {
@@ -81,6 +82,9 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email,onRegisterComplete  }) 
       setApellido("");
       setEdad("");
       setTelefono("");
+
+      onRegisterComplete();
+      
     } catch (error) {
       console.error("Error al guardar el usuario:", error);
       Alert.alert("Error", "Hubo un problema al guardar el usuario.");
@@ -111,14 +115,14 @@ const RegisterScreen: React.FC<RegisterProps> = ({ email,onRegisterComplete  }) 
         placeholder="Nombres"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
         value={nombre}
-        onChangeText={(text) => setNombre(capitalizeWords(text))} 
+        onChangeText={(text) => setNombre(capitalizeWords(text))} // Capitaliza en tiempo real
       />
 
       <TextInput
         placeholder="Apellidos"
         className="border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 mb-4 w-full"
         value={apellido}
-        onChangeText={(text) => setApellido(capitalizeWords(text))}
+        onChangeText={(text) => setApellido(capitalizeWords(text))} // Capitaliza en tiempo real
       />
 
       {/* Selector de edad */}

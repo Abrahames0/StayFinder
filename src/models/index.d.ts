@@ -132,6 +132,9 @@ type EagerAlojamiento = {
   readonly reservas?: (Reserva | null)[] | null;
   readonly esRecomendado?: boolean | null;
   readonly Usuario?: Usuario | null;
+  readonly banos?: string | null;
+  readonly reglas?: string | null;
+  readonly wifi?: string | null;
   readonly usuarioID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -150,6 +153,9 @@ type LazyAlojamiento = {
   readonly reservas: AsyncCollection<Reserva>;
   readonly esRecomendado?: boolean | null;
   readonly Usuario: AsyncItem<Usuario | undefined>;
+  readonly banos?: string | null;
+  readonly reglas?: string | null;
+  readonly wifi?: string | null;
   readonly usuarioID: string;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

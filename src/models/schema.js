@@ -399,6 +399,27 @@ export const schema = {
                         ]
                     }
                 },
+                "banos": {
+                    "name": "banos",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reglas": {
+                    "name": "reglas",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "wifi": {
+                    "name": "wifi",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "usuarioID": {
                     "name": "usuarioID",
                     "isArray": false,
@@ -911,5 +932,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ee4e7227eff7493f95a69d944869431d"
+    "version": "c355f4d054499888321c57fa268ec85f"
 };
