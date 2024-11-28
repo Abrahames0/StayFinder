@@ -10,6 +10,7 @@ type ChatRoom @model @auth(rules: [{allow: public}]) {
   Mensajes: [Mensaje] @hasMany(indexName: "byChatRoom", fields: ["id"])
   usuarios: [Usuario] @manyToMany(relationName: "UsuarioChatRoom")
   LastMensaje: Mensaje @hasOne
+  chatKey: String
 }
 
 enum EstadoReserva {
@@ -41,6 +42,7 @@ type Alojamiento @model @auth(rules: [{allow: public}]) {
   reglas: String
   wifi: String
   usuarioID: ID! @index(name: "byUsuario")
+  tiempoRenta: String
 }
 
 type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {

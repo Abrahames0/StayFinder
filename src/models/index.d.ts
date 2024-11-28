@@ -56,6 +56,7 @@ type EagerChatRoom = {
   readonly Mensajes?: (Mensaje | null)[] | null;
   readonly usuarios?: (UsuarioChatRoom | null)[] | null;
   readonly LastMensaje?: Mensaje | null;
+  readonly chatKey?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly chatRoomLastMensajeId?: string | null;
@@ -70,6 +71,7 @@ type LazyChatRoom = {
   readonly Mensajes: AsyncCollection<Mensaje>;
   readonly usuarios: AsyncCollection<UsuarioChatRoom>;
   readonly LastMensaje: AsyncItem<Mensaje | undefined>;
+  readonly chatKey?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly chatRoomLastMensajeId?: string | null;
@@ -136,6 +138,7 @@ type EagerAlojamiento = {
   readonly reglas?: string | null;
   readonly wifi?: string | null;
   readonly usuarioID: string;
+  readonly tiempoRenta?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -157,6 +160,7 @@ type LazyAlojamiento = {
   readonly reglas?: string | null;
   readonly wifi?: string | null;
   readonly usuarioID: string;
+  readonly tiempoRenta?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

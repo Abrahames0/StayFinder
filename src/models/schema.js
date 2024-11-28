@@ -151,6 +151,13 @@ export const schema = {
                         ]
                     }
                 },
+                "chatKey": {
+                    "name": "chatKey",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -425,6 +432,13 @@ export const schema = {
                     "isArray": false,
                     "type": "ID",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "tiempoRenta": {
+                    "name": "tiempoRenta",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "createdAt": {
@@ -932,5 +946,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c355f4d054499888321c57fa268ec85f"
+    "version": "15b320245e5abe1ffa80acebd2431c13"
 };
