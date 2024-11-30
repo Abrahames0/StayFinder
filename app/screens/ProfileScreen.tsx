@@ -12,36 +12,53 @@ import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { Usuario } from "../../src/models";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
-const ProfileScreen: React.FC = () => {
+const ProfileScreen: React.FC<any> = ({ navigation }) => {
   const { user, authStatus } = useAuthenticator();
   const [profileUser, setProfileUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        if (authStatus === "authenticated" && user) {
-          const email = user.signInDetails?.loginId || user.username;
-          if (!email) {
-            console.error("No se encontró un email válido para el usuario.");
-            return;
-          }
-          const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
-          if (users.length > 0) {
-            setProfileUser(users[0]);
-          } else {
-            console.error("Usuario no encontrado en DataStore.");
-          }
+  // Función que carga el usuario desde DataStore
+  const fetchUser = async () => {
+    try {
+      if (authStatus === "authenticated" && user) {
+        const email = user.signInDetails?.loginId || user.username;
+        if (!email) {
+          console.error("No se encontró un email válido para el usuario.");
+          return;
         }
-      } catch (err) {
-        console.error("Error al obtener el usuario:", err);
-      } finally {
-        setLoading(false);
+        const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
+        if (users.length > 0) {
+          setProfileUser(users[0]);
+        } else {
+          console.error("Usuario no encontrado en DataStore.");
+        }
       }
-    };
+    } catch (err) {
+      console.error("Error al obtener el usuario:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUser();
-  }, [authStatus, user]);
+  useEffect(() => {
+    fetchUser(); // Carga el usuario cuando se monta el componente
+
+    // Sincronización en segundo plano usando observeQuery
+    const subscription = DataStore.observeQuery(Usuario, (u) => u.email.eq(user?.username || '')).subscribe(snapshot => {
+      const { items, isSynced } = snapshot;
+      if (items.length > 0) {
+        // Si el conjunto de datos está sincronizado, actualizamos el perfil
+        setProfileUser(items[0]);
+        console.log('[Snapshot] Usuario actualizado:', items[0]);
+      }
+
+      console.log('[Snapshot] isSynced:', isSynced);
+    });
+
+    // Limpia la suscripción cuando el componente se desmonte
+    return () => subscription.unsubscribe();
+
+  }, [authStatus, user]); // Vuelve a cargar los datos cada vez que el authStatus o el usuario cambian
 
   if (loading) {
     return (
@@ -58,6 +75,11 @@ const ProfileScreen: React.FC = () => {
       </View>
     );
   }
+
+  const handleEditProfile = () => {
+    // Navegar a la pantalla de edición y pasar los datos del usuario
+    navigation.navigate("EditProfileScreen", { user: profileUser });
+  };
 
   return (
     <ScrollView className="flex-1 bg-white px-6">
@@ -118,7 +140,6 @@ const ProfileScreen: React.FC = () => {
 
       {/* Botones */}
       <View className="mt-8 space-y-4 items-center">
-        {/* Botón 1 */}
         <TouchableOpacity
           className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
           style={{ backgroundColor: "#DF96F9" }}
@@ -129,7 +150,6 @@ const ProfileScreen: React.FC = () => {
           <MaterialIcons name="loop" size={16} color="black" />
         </TouchableOpacity>
 
-        {/* Botón 2 */}
         <TouchableOpacity
           className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
           style={{ backgroundColor: "#DF96F9" }}
@@ -142,7 +162,7 @@ const ProfileScreen: React.FC = () => {
       </View>
 
       {/* Editar perfil */}
-      <TouchableOpacity className="mt-6">
+      <TouchableOpacity className="mt-6" onPress={handleEditProfile}>
         <Text className="text-center font-bold text-black text-sm">
           Editar Perfil
         </Text>
