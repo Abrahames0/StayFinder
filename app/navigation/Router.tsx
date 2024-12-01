@@ -21,17 +21,21 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const Router = () => {
+const Router = ({ initialRoute = "Tabs" }: { initialRoute?: keyof RootStackParamList }) => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName={initialRoute} // Establecemos la ruta inicial
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen name="Tabs" component={NavigationTabs} />
+      <Stack.Screen name="TabsAnfitrion" component={NavigationTabsA} />
       <Stack.Screen name="Chat" component={MessagesScreen} />
       <Stack.Screen name="Perfil" component={ProfileScreen} />
       <Stack.Screen name="Mensajes" component={ListMensajes} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-      <Stack.Screen name="TabsAnfitrion" component={NavigationTabsA} />
     </Stack.Navigator>
   );
 };
+
 
 export default Router;
