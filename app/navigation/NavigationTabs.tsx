@@ -22,6 +22,7 @@ const Tab = createBottomTabNavigator<TabParamList>();
 const TabText = styled(Text);
 
 const NavigationTabs = ( )  => {
+ console.log("hola estudiante");
  
   return (
     <Tab.Navigator

@@ -2,6 +2,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import NavigationTabs from "./NavigationTabs"; // Tus pestañas actuales
+import NavigationTabsA from "./NavigationTabsA";
 import MessagesScreen from "../screens/MessagesScreen";
 import ListMensajes from "@/components/mensajes/ListMensajes";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -15,6 +16,7 @@ export type RootStackParamList = {
   Perfil: undefined; // Ruta para configuración
   Mensajes: { chatRoomId: string; currentUserId: string, nameSelected: string};
   EditProfileScreen: undefined; // Ruta para configuración
+  TabsAnfitrion : undefined; //
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -27,6 +29,7 @@ const Router = () => {
       <Stack.Screen name="Perfil" component={ProfileScreen} />
       <Stack.Screen name="Mensajes" component={ListMensajes} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+      <Stack.Screen name="TabsAnfitrion" component={NavigationTabsA} />
     </Stack.Navigator>
   );
 };

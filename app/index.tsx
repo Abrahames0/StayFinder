@@ -4,6 +4,7 @@ import { Amplify } from "aws-amplify";
 import { useAuthenticator, Authenticator } from "@aws-amplify/ui-react-native";
 import awsconfig from "../src/amplifyconfiguration.json";
 import NavigationTabs from "./navigation/NavigationTabs";
+import NavigationAnfitrion from "./navigation/NavigationTabsA";
 import RegisterScreen from "./screens/RegisterScreen";
 import { DataStore } from "@aws-amplify/datastore";
 import { Usuario } from "../src/models";
@@ -11,6 +12,7 @@ import { LazyUsuario } from "../src/models";
 import { UserProvider } from "@/components/hooks/UserContext";
 import { useUser } from "@/components/hooks/UserContext";
 import Router from "./navigation/Router";
+
 
 Amplify.configure(awsconfig);
 
@@ -30,6 +32,7 @@ const AppContent = () => {
           setUserEmail(email);
           const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
           // console.log(users[0]);
+          console.log(users);
           
           if (users.length > 0) {
             setUser(users[0]); // Establecer usuario en el contexto
@@ -60,6 +63,7 @@ const AppContent = () => {
       </View>
     );
   }
+  
 
   return isRegistered ? (
     <Router/>
