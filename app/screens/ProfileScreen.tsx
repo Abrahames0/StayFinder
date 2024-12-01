@@ -13,7 +13,7 @@ import { Usuario } from "../../src/models";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 const ProfileScreen: React.FC<any> = ({ navigation }) => {
-  const { user, authStatus } = useAuthenticator();
+  const { user, authStatus, signOut } = useAuthenticator();
   const [profileUser, setProfileUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -49,16 +49,47 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
       if (items.length > 0) {
         // Si el conjunto de datos está sincronizado, actualizamos el perfil
         setProfileUser(items[0]);
-        console.log('[Snapshot] Usuario actualizado:', items[0]);
+
       }
 
-      console.log('[Snapshot] isSynced:', isSynced);
+
     });
 
     // Limpia la suscripción cuando el componente se desmonte
     return () => subscription.unsubscribe();
 
   }, [authStatus, user]); // Vuelve a cargar los datos cada vez que el authStatus o el usuario cambian
+
+
+  const handleSwitchUserType = async () => {
+    if (!profileUser) return;
+
+    const nuevoTipo = profileUser.tipo === "ESTUDIANTE" ? "ANFITRION" : "ESTUDIANTE";
+
+    try {
+      // Actualiza el usuario con el nuevo tipo
+      await DataStore.save(
+        Usuario.copyOf(profileUser, (updated) => {
+          updated.tipo = nuevoTipo;
+        })
+      );
+
+      // Mensaje de confirmación
+      alert(
+        `¡Ahora eres ${nuevoTipo === "ANFITRION" ? "anfitrión" : "estudiante"}!`
+      );
+
+      // Actualiza el estado local
+      setProfileUser((prev) => {
+        if (!prev) return null;
+        return { ...prev, tipo: nuevoTipo };
+      });
+    } catch (error) {
+      console.error("Error al cambiar el tipo de usuario:", error);
+      alert("Ocurrió un error al intentar cambiar el tipo de usuario.");
+    }
+  };
+
 
   if (loading) {
     return (
@@ -140,25 +171,20 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
 
       {/* Botones */}
       <View className="mt-8 space-y-4 items-center">
+
         <TouchableOpacity
+          onPress={handleSwitchUserType} // Una sola función manejará ambos casos
           className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
           style={{ backgroundColor: "#DF96F9" }}
         >
           <Text className="text-black font-semibold text-sm text-center">
-            ¿Quieres ser anfitrión?
+            {profileUser.tipo === "ESTUDIANTE"
+              ? "Cambiar a anfitrión"
+              : "Cambiar a estudiante"}
           </Text>
           <MaterialIcons name="loop" size={16} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
-          style={{ backgroundColor: "#DF96F9" }}
-        >
-          <Text className="text-black font-semibold text-sm text-center">
-            Cambiar a anfitrión
-          </Text>
-          <MaterialIcons name="loop" size={16} color="black" />
-        </TouchableOpacity>
       </View>
 
       {/* Editar perfil */}
@@ -169,7 +195,7 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
       </TouchableOpacity>
 
       {/* Cerrar sesión */}
-      <TouchableOpacity className="mt-4">
+      <TouchableOpacity className="mt-4" onPress={signOut}>
         <Text className="text-center text-gray-600 text-sm">Cerrar sesión</Text>
       </TouchableOpacity>
     </ScrollView>
