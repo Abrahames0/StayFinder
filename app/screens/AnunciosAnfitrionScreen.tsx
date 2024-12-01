@@ -5,21 +5,22 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-  StyleSheet,
   ImageBackground,
+  Modal,
 } from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { Usuario, Alojamiento } from "@/src/models";
-import { Ionicons } from "@expo/vector-icons"; // Íconos
+import { Ionicons } from "@expo/vector-icons";
 
 const AnunciosAnfitrionScreen: React.FC = () => {
-  const { user, authStatus } = useAuthenticator(); // Obtenemos la sesión
+  const { user, authStatus } = useAuthenticator();
   const [profileUser, setProfileUser] = useState<Usuario | null>(null);
   const [ads, setAds] = useState<Alojamiento[]>([]);
+  const [selectedAd, setSelectedAd] = useState<Alojamiento | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
-  // Obtener el usuario autenticado
   const fetchUser = async () => {
     setLoading(true);
     try {
@@ -31,9 +32,7 @@ const AnunciosAnfitrionScreen: React.FC = () => {
           return;
         }
 
-        // Consultar el usuario autenticado en DataStore
         const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
-
         if (users.length > 0) {
           setProfileUser(users[0]);
         } else {
@@ -47,7 +46,6 @@ const AnunciosAnfitrionScreen: React.FC = () => {
     }
   };
 
-  // Obtener alojamientos asociados al usuario
   const fetchAlojamientos = async () => {
     if (!profileUser) return;
 
@@ -74,147 +72,197 @@ const AnunciosAnfitrionScreen: React.FC = () => {
     }
   }, [profileUser]);
 
+  const openModal = (ad: Alojamiento) => {
+    setSelectedAd(ad);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setSelectedAd(null);
+    setModalVisible(false);
+  };
+
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
+      <View className="flex-1 justify-center items-center bg-gray-100">
         <ActivityIndicator size="large" color="#6200EE" />
-        <Text style={styles.loadingText}>Cargando datos...</Text>
+        <Text className="mt-4 text-gray-500">Cargando datos...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-gray-100">
       {/* Título y botón */}
-      <View style={styles.header}>
-        <Text style={styles.title2}>Tus anuncios creadas</Text>
-        <TouchableOpacity style={styles.addButton}>
+      <View className="flex-row justify-between items-center px-4 mt-12 mb-2">
+        <Text className="text-2xl font-bold text-gray-800">Tus anuncios creados</Text>
+        <TouchableOpacity className="w-10 h-10 rounded-full bg-purple-400 justify-center items-center border-2 border-purple-400">
           <Ionicons name="add" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
 
       {/* Anuncios */}
-      <ScrollView style={styles.scrollContainer}>
+      <ScrollView className="flex-1 px-4 py-2">
         {ads.map((ad) => (
-          <View key={ad.id} style={styles.cardContainer}>
+          <TouchableOpacity
+            key={ad.id}
+            onPress={() => openModal(ad)}
+            className="mb-4 rounded-xl overflow-hidden border-2 border-black"
+          >
             <ImageBackground
               source={{
-                uri:
-                  ad.fotosAlojamiento?.[0] || "https://via.placeholder.com/150",
+                uri: ad.fotosAlojamiento?.[0] || "https://via.placeholder.com/150",
               }}
-              style={styles.cardBackground}
-              imageStyle={styles.cardImage}
+              className="h-44 justify-end"
+              imageStyle={{ resizeMode: "cover", opacity: 0.2 }}
             >
-              <View style={styles.overlay}>
-                <Text style={styles.title}>{ad.titulo}</Text>
-                <Text style={styles.details}>
+              <View className="absolute inset-0 p-4 justify-end">
+                <Text className="text-lg font-bold text-gray-800">{ad.titulo}</Text>
+                <Text className="text-sm text-gray-600 mt-1">
                   {ad.camas} camas - {ad.banos} baño
                 </Text>
-                <TouchableOpacity style={styles.button}>
-                  <Text style={styles.buttonText}>Creado</Text>
-                </TouchableOpacity>
+                <View className="mt-3 bg-purple-400 py-1 px-3 rounded-full border border-black self-start">
+                  <Text className="text-white text-sm font-medium">Creado</Text>
+                </View>
               </View>
             </ImageBackground>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
+
+      {/* Modal */}
+      {selectedAd && (
+        <Modal
+  visible={isModalVisible}
+  transparent
+  animationType="slide"
+  onRequestClose={closeModal}
+>
+  {/* Fondo semitransparente */}
+  <View
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo negro con opacidad
+    }}
+  />
+
+  {/* Contenido del modal */}
+  <View
+    style={{
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: "white",
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      paddingHorizontal: 24,
+      paddingBottom: 32,
+      paddingTop: 16,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: -2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 4,
+      elevation: 5, // Sombra para Android
+    }}
+  >
+    {/* Botón de cerrar */}
+    <TouchableOpacity
+      onPress={closeModal}
+      style={{
+        position: "absolute",
+        top: 16,
+        left: 16,
+        width: 25,
+        height: 25,
+        borderRadius: 16,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Ionicons name="close" size={24} color="black" />
+    </TouchableOpacity>
+
+    {/* Imagen */}
+    <ImageBackground
+      source={{
+        uri:
+          selectedAd?.fotosAlojamiento?.[0] ||
+          "https://via.placeholder.com/150",
+      }}
+      style={{
+        width: 133, // Ancho especificado
+        height: 80, // Altura especificada
+        borderRadius: 15,
+        alignSelf: "center",
+        marginTop: 16, // Espaciado reducido
+        marginBottom: 8, // Espaciado reducido
+        overflow: "hidden",
+      }}
+      imageStyle={{ resizeMode: "cover" }}
+    />
+
+    {/* Título */}
+    <Text
+      style={{
+        fontFamily: "Manrope",
+        fontWeight: "700",
+        fontSize: 14,
+        lineHeight: 19.12,
+        textAlign: "center",
+        color: "#333",
+        marginBottom: 12, // Reducido para menos espacio
+      }}
+    >
+      {selectedAd?.titulo}
+    </Text>
+
+    {/* Botón Editar */}
+    <TouchableOpacity
+      style={{
+        width: 270,
+        height: 40,
+        backgroundColor: "#DF96F9", // Color especificado
+        borderRadius: 15,
+        borderWidth: 1, // Borde negro
+        borderColor: "black",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center",
+        marginTop: 10,
+      }}
+    >
+      <Text style={{ color: "#FFF", fontWeight: "600" }}>Editar Alojamiento</Text>
+    </TouchableOpacity>
+
+    {/* Botón Eliminar */}
+    <TouchableOpacity
+      style={{
+        width: 250,
+        height: 40,
+        backgroundColor: "#000000A6", // Color especificado
+        borderRadius: 15,
+        borderWidth: 1, // Borde negro
+        borderColor: "black",
+        justifyContent: "center",
+        alignItems: "center",
+        alignSelf: "center",
+        marginTop: 10,
+      }}
+    >
+      <Text style={{ color: "#FFF", fontWeight: "600" }}>Eliminar Alojamiento</Text>
+    </TouchableOpacity>
+  </View>
+</Modal>
+
+
+      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f9f9f9",
-  },
-  loadingText: {
-    marginTop: 16,
-    color: "#999",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#f9f9f9",
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    marginTop: 52, // Altura desde el top
-    marginBottom:5
-  },
-  title2: {
-    fontSize: 27,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  addButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#DF96F9",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: "#DF96F9",
-  },
-  scrollContainer: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  cardContainer: {
-    marginBottom: 16,
-    borderRadius: 15,
-    overflow: "hidden",
-    borderWidth: 2,
-    borderColor: "black",
-  },
-  cardBackground: {
-    height: 180,
-    justifyContent: "flex-end",
-  },
-  cardImage: {
-    flex: 1,
-    opacity: 0.2,
-    resizeMode: "cover",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 16,
-    justifyContent: "flex-end",
-  },
-  details: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 4,
-  },
-  button: {
-    marginTop: 12,
-    backgroundColor: "#DF96F9",
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-    alignSelf: "flex-start",
-    borderWidth: 1,
-    borderColor: "black",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "500",
-  },
-});
 
 export default AnunciosAnfitrionScreen;
