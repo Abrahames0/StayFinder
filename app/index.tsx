@@ -68,12 +68,12 @@ const AppContent = () => {
     );
   }
 
-  /
+  
   if (isRegistered) {
     if (userType === "ESTUDIANTE") {
       return <Router initialRoute="Tabs" />; 
     } else if (userType === "ANFITRION") {
-      return <Router initialRoute="TabsAnfitrion" />;s
+      return <Router initialRoute="TabsAnfitrion" />;
     }
   }
 
