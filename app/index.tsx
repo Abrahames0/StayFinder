@@ -68,12 +68,12 @@ const AppContent = () => {
     );
   }
 
-  // Redirigir según el tipo de usuario
+  /
   if (isRegistered) {
     if (userType === "ESTUDIANTE") {
-      return <Router initialRoute="Tabs" />; // Navegación de estudiantes
+      return <Router initialRoute="Tabs" />; 
     } else if (userType === "ANFITRION") {
-      return <Router initialRoute="TabsAnfitrion" />; // Navegación de anfitriones
+      return <Router initialRoute="TabsAnfitrion" />;s
     }
   }
 
