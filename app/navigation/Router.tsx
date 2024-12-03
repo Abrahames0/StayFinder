@@ -6,17 +6,18 @@ import NavigationTabsA from "./NavigationTabsA";
 import MessagesScreen from "../screens/MessagesScreen";
 import ListMensajes from "@/components/mensajes/ListMensajes";
 import ProfileScreen from "../screens/ProfileScreen";
-import Contacts from "@/components/mensajes/Contacts";
 import EditProfileScreen from "../screens/EditProfileScreen";
-
+import AgendarCitaScreen from "../screens/AgendarCitaScreen";
+import ExploreScreen from "../screens/ExploreScreen";
 
 export type RootStackParamList = {
   Tabs: undefined; // Navegación de pestañas
   Chat: { chatRoomId: string }; // Ruta para el chat, con parámetro
   Perfil: undefined; // Ruta para configuración
-  Mensajes: { chatRoomId: string; currentUserId: string, nameSelected: string};
+  Mensajes: { chatRoomId: string; currentUserId: string; nameSelected: string };
   EditProfileScreen: undefined; // Ruta para configuración
-  TabsAnfitrion : undefined; //
+  TabsAnfitrion: undefined; // 
+  AgendarCita: { property: any }; // Nueva ruta para agendar cita
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -24,7 +25,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Router = ({ initialRoute = "Tabs" }: { initialRoute?: keyof RootStackParamList }) => {
   return (
     <Stack.Navigator
-      initialRouteName={initialRoute} // Establecemos la ruta inicial
+      initialRouteName={initialRoute}
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Tabs" component={NavigationTabs} />
@@ -33,9 +34,9 @@ const Router = ({ initialRoute = "Tabs" }: { initialRoute?: keyof RootStackParam
       <Stack.Screen name="Perfil" component={ProfileScreen} />
       <Stack.Screen name="Mensajes" component={ListMensajes} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+      <Stack.Screen name="AgendarCita" component={AgendarCitaScreen} />
     </Stack.Navigator>
   );
 };
-
 
 export default Router;

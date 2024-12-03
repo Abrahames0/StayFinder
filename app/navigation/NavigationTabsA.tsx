@@ -2,15 +2,12 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
-import ExploreScreen from "../screens/ExploreScreen";
-import MapScreen from "../screens/MapScreen";
 import MessagesScreen from "../screens/MessagesScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import AnunciosAnfitrionScreen from "../screens/AnunciosAnfitrionScreen";
 import InicioAnfitrionScreen from "../screens/InicioAnfitrionScreen"; 
 import { Text } from "react-native";
 import { styled } from "nativewind";
-import { Usuario } from "@/src/models";
 
 type TabParamList = {
   Inicio: undefined;

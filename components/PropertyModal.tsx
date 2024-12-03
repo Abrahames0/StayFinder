@@ -2,6 +2,10 @@ import React, { useEffect } from "react";
 import { Modal, View, Text, TouchableOpacity, Animated, ScrollView } from "react-native";
 import PropertyImages from "./PropertyImages";
 import Accordion from "./Accordion";
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from "@/app/navigation/Router";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 
 interface PropertyModalProps {
   visible: boolean;
@@ -16,6 +20,12 @@ const PropertyModal: React.FC<PropertyModalProps> = ({
   selectedProperty,
   slideAnim,
 }) => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const handleAgendarCita = () => {
+    navigation.navigate('AgendarCita', { property: selectedProperty });
+  };  
+
   useEffect(() => {
     if (visible) {
       Animated.spring(slideAnim, {
@@ -105,7 +115,7 @@ const PropertyModal: React.FC<PropertyModalProps> = ({
                 </Text>
               </View>
 
-              <TouchableOpacity className="bg-[#DF96F9] py-3 px-6 rounded-full items-center shadow-md">
+              <TouchableOpacity onPress={handleAgendarCita} className="bg-[#DF96F9] py-3 px-6 rounded-full items-center shadow-md">
                 <Text className="text-white font-bold">Agendar Cita</Text>
               </TouchableOpacity>
             </ScrollView>
