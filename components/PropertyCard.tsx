@@ -18,7 +18,7 @@ const StyledImage = styled(Image);
 const PropertyCard: React.FC<PropertyCardProps> = ({ title, isHorizontal, description, price, image, onPress }) => {
   return (
     <StyledTouchableOpacity
-      onPress={onPress}  // Asegúrate de que esto está recibiendo la función showModal correctamente
+      onPress={onPress}
       className={`bg-white rounded-lg shadow-md p-4 ${isHorizontal ? "w-40 mx-2" : "mb-4 mx-4"}`}
     >
       <StyledImage

@@ -37,6 +37,7 @@ const RecommendationsList: React.FC<RecommendationsListProps> = ({
             description={item.description}
             price={item.price}
             image={item.image || "https://via.placeholder.com/300x300"}
+            onPress={item.onPress}
             isHorizontal
           />
           

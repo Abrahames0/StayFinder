@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator} from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
-import { Usuario, TipoUsuario } from "../../src/models"; // Importamos TipoUsuario
+import { Usuario, TipoUsuario } from "../../src/models";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 
 const ProfileScreen: React.FC<any> = ({ navigation }) => {
@@ -17,8 +10,8 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
   const [profileUser, setProfileUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [changingType, setChangingType] = useState<boolean>(false);
+  const [isFirstTimeHost, setIsFirstTimeHost] = useState<boolean>(false);
 
-  // Función que carga el usuario desde DataStore
   const fetchUser = async () => {
     setLoading(true);
     try {
@@ -31,6 +24,7 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
         const users = await DataStore.query(Usuario, (u) => u.email.eq(email));
         if (users.length > 0) {
           setProfileUser(users[0]);
+          setIsFirstTimeHost(users[0].tipo === TipoUsuario.ESTUDIANTE); // Si es estudiante, es la primera vez como anfitrión
         } else {
           console.error("Usuario no encontrado en DataStore.");
         }
@@ -45,7 +39,6 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
   useEffect(() => {
     fetchUser();
 
-    // Sincronización en tiempo real usando observeQuery
     const subscription = DataStore.observeQuery(
       Usuario,
       (u) => u.email.eq(user?.username || "")
@@ -53,13 +46,13 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
       const { items } = snapshot;
       if (items.length > 0) {
         setProfileUser(items[0]);
+        setIsFirstTimeHost(items[0].tipo === TipoUsuario.ESTUDIANTE); // Actualiza si es la primera vez
       }
     });
 
     return () => subscription.unsubscribe();
   }, [authStatus, user]);
 
-  // Cambiar tipo y redirigir
   const handleSwitchUserType = async () => {
     if (!profileUser) return;
 
@@ -68,9 +61,8 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
         ? TipoUsuario.ANFITRION
         : TipoUsuario.ESTUDIANTE;
 
-    setChangingType(true); // Activa la pantalla de carga
+    setChangingType(true);
     try {
-      // Actualiza el usuario con el nuevo tipo
       await DataStore.save(
         Usuario.copyOf(profileUser, (updated) => {
           updated.tipo = nuevoTipo;
@@ -83,7 +75,6 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
         }!`
       );
 
-      // Redirige según el tipo actualizado
       if (nuevoTipo === TipoUsuario.ANFITRION) {
         navigation.navigate("TabsAnfitrion");
       } else {
@@ -93,7 +84,7 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
       console.error("Error al cambiar el tipo de usuario:", error);
       alert("Ocurrió un error al intentar cambiar el tipo de usuario.");
     } finally {
-      setChangingType(false); // Desactiva la pantalla de carga
+      setChangingType(false);
     }
   };
 
@@ -193,15 +184,15 @@ const ProfileScreen: React.FC<any> = ({ navigation }) => {
       <View className="mt-8 space-y-4 items-center">
         <TouchableOpacity
           onPress={handleSwitchUserType}
-          className="flex-row items-center justify-between rounded-full px-4 py-4 w-48 shadow-md"
+          className="flex-row items-center justify-between rounded-full px-4 py-4 w-52 shadow-md"
           style={{ backgroundColor: "#DF96F9" }}
         >
-          <Text className="text-black font-semibold text-sm text-center">
+          <Text className="text-white font-semibold text-base text-center">
             {profileUser.tipo === TipoUsuario.ESTUDIANTE
               ? "Cambiar a anfitrión"
               : "Cambiar a estudiante"}
           </Text>
-          <MaterialIcons name="loop" size={16} color="black" />
+          <MaterialIcons name="loop" size={20} color="white" />
         </TouchableOpacity>
       </View>
 

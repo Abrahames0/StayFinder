@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  View,
-  ActivityIndicator,
-  Text,
-  RefreshControl,
-  Animated,
-} from "react-native";
+import { FlatList, View, ActivityIndicator, Text, RefreshControl,Animated} from "react-native";
 import { styled } from "nativewind";
 import { DataStore } from "@aws-amplify/datastore";
 
@@ -29,7 +22,7 @@ const ExploreScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Alojamiento | null>(null);
 
-  const [slideAnim] = useState(new Animated.Value(200)); // Animación de deslizamiento desde abajo
+  const [slideAnim] = useState(new Animated.Value(0)); // Animación de deslizamiento desde abajo
 
   const loadAlojamientos = async (isRefresh = false) => {
     try {
@@ -54,26 +47,24 @@ const ExploreScreen = () => {
     }
   }; 
   
-    // Mostrar el modal
-    const showModal = (property: Alojamiento) => {
-      setSelectedProperty(property);
-      setModalVisible(true);
+  const showModal = (property: Alojamiento) => {
+    setSelectedProperty(property);  
+    setModalVisible(true);
     
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
-    };
+    Animated.spring(slideAnim, {
+      toValue: 0,
+      useNativeDriver: true,
+    }).start();
+  };
+        
   
-    // Cerrar el modal
     const hideModal = () => {
       Animated.spring(slideAnim, {
         toValue: 300,
         useNativeDriver: true,
       }).start(() => setModalVisible(false));
-    };
+    };        
 
-  // Suscripción para actualizaciones en tiempo real
   useEffect(() => {
     const subscription = DataStore.observe(Alojamiento).subscribe((msg) => {
       console.log("Cambio detectado:", msg);
@@ -126,7 +117,7 @@ const ExploreScreen = () => {
         title={title}
         description={description}
         price={price}
-        image={image || "https://via.placeholder.com/300x300"} // Asegúrate de que siempre sea un string
+        image={image}
         onPress={() => showModal(item)}
       />
     );
@@ -136,7 +127,7 @@ const ExploreScreen = () => {
     if (item.type === "property") {
       return renderItem({ item: item.data });
     }
-
+  
     if (item.type === "recommendation") {
       return (
         <RecommendationsList
@@ -152,17 +143,18 @@ const ExploreScreen = () => {
               rec.fotosAlojamiento && rec.fotosAlojamiento.length > 0
                 ? rec.fotosAlojamiento[0]
                 : "https://via.placeholder.com/300x300",
+            onPress: () => showModal(rec),
           }))}
         />
       );
     }
-
+  
     if (item.type === "ad") {
       return <AdBanner image="https://via.placeholder.com/600x200" />;
     }
-
+  
     return null;
-  };
+  };    
 
   const combinedData = () => {
     const data = [];

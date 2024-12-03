@@ -17,10 +17,8 @@ const MessagesScreen = () => {
 
   useEffect(() => {
     if (user?.id) {
-      setCurrentUserID(user.id); // Asignar el ID del usuario autenticado
-    }
-    console.log(user);
-    
+      setCurrentUserID(user.id);
+    }    
   }, [user]);
 
   return (
