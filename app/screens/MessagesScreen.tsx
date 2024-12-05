@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { View } from "react-native";
 import ListMensajes from "@/components/mensajes/ListMensajes";
 import Contacts from "@/components/mensajes/Contacts";
@@ -15,8 +15,10 @@ const MessagesScreen = () => {
   const route = useRoute<RouteProp<RootStackParamList, "Mensajes">>();
   const { chatRoomId } = route.params || {}; // Si no hay parámetros, será `undefined`
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user?.id) {
+      console.log(user.id);
+      
       setCurrentUserID(user.id);
     }    
   }, [user]);

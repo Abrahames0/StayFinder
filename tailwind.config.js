@@ -13,6 +13,9 @@ module.exports = {
         'manrope-bold': ['Manrope-Bold', 'sans-serif'],
         'manrope-extrabold': ['Manrope-ExtraBold', 'sans-serif'],
       },
+      colors: {
+        customPurple: '#df96f9', // Nombre de tu color personalizado
+      },
     },
   },
   plugins: [],

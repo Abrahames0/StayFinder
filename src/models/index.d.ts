@@ -24,6 +24,7 @@ type EagerMensaje = {
   readonly texto?: string | null;
   readonly chatroomID: string;
   readonly usuarioID: string;
+  readonly leido?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -37,6 +38,7 @@ type LazyMensaje = {
   readonly texto?: string | null;
   readonly chatroomID: string;
   readonly usuarioID: string;
+  readonly leido?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

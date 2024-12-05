@@ -3,6 +3,7 @@ type Mensaje @model @auth(rules: [{allow: public}]) {
   texto: String
   chatroomID: ID! @index(name: "byChatRoom")
   usuarioID: ID! @index(name: "byUsuario")
+  leido: Boolean
 }
 
 type ChatRoom @model @auth(rules: [{allow: public}]) {
