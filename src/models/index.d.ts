@@ -24,6 +24,7 @@ type EagerMensaje = {
   readonly texto?: string | null;
   readonly chatroomID: string;
   readonly usuarioID: string;
+  readonly leido?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -37,6 +38,7 @@ type LazyMensaje = {
   readonly texto?: string | null;
   readonly chatroomID: string;
   readonly usuarioID: string;
+  readonly leido?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -134,12 +136,14 @@ type EagerAlojamiento = {
   readonly reservas?: (Reserva | null)[] | null;
   readonly esRecomendado?: boolean | null;
   readonly Usuario?: Usuario | null;
-  readonly banos?: string | null;
-  readonly camas?: string | null;
-  readonly wifi?: string | null;
-  readonly tiempoRenta?: string | null;
+  readonly banos?: number | null;
+  readonly camas?: number | null;
+  readonly tiempoRenta?: number | null;
   readonly usuarioID: string;
   readonly reglas?: string | null;
+  readonly tipoAlojamiento?: (string | null)[] | null;
+  readonly personas?: (string | null)[] | null;
+  readonly servicios?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -157,12 +161,14 @@ type LazyAlojamiento = {
   readonly reservas: AsyncCollection<Reserva>;
   readonly esRecomendado?: boolean | null;
   readonly Usuario: AsyncItem<Usuario | undefined>;
-  readonly banos?: string | null;
-  readonly camas?: string | null;
-  readonly wifi?: string | null;
-  readonly tiempoRenta?: string | null;
+  readonly banos?: number | null;
+  readonly camas?: number | null;
+  readonly tiempoRenta?: number | null;
   readonly usuarioID: string;
   readonly reglas?: string | null;
+  readonly tipoAlojamiento?: (string | null)[] | null;
+  readonly personas?: (string | null)[] | null;
+  readonly servicios?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
