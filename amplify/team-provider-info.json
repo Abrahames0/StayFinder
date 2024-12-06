@@ -15,9 +15,6 @@
       "auth": {
         "StayFinder": {}
       },
-      "api": {
-        "StayFinder": {}
-      },
       "storage": {
         "s3stayfinderstorage771fbe21": {}
       }

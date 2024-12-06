@@ -4,10 +4,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import MessagesScreen from "../screens/MessagesScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-import AnunciosAnfitrionScreen from "../screens/AnunciosAnfitrionScreen";
-import InicioAnfitrionScreen from "../screens/InicioAnfitrionScreen"; 
+import InicioAnfitrionScreen from "../screens/Anfritrion/InicioAnfitrionScreen"; 
 import { Text } from "react-native";
 import { styled } from "nativewind";
+import AnunciosAnfitrionScreen from "../screens/Anfritrion/AnunciosAnfitrionScreen";
 
 type TabParamList = {
   Inicio: undefined;

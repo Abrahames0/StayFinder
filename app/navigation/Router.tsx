@@ -8,7 +8,7 @@ import ListMensajes from "@/components/mensajes/ListMensajes";
 import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import AgendarCitaScreen from "../screens/AgendarCitaScreen";
-import ExploreScreen from "../screens/ExploreScreen";
+import Questionnaire from "../screens/Anfritrion/Questionnaire";
 
 export type RootStackParamList = {
   Tabs: undefined; // Navegación de pestañas
@@ -17,7 +17,8 @@ export type RootStackParamList = {
   Mensajes: { chatRoomId: string; currentUserId: string; nameSelected: string };
   EditProfileScreen: undefined; // Ruta para configuración
   TabsAnfitrion: undefined; // 
-  AgendarCita: { property: any }; // Nueva ruta para agendar cita
+  AgendarCita: { property: any };
+  Questionnaire: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -35,6 +36,7 @@ const Router = ({ initialRoute = "Tabs" }: { initialRoute?: keyof RootStackParam
       <Stack.Screen name="Mensajes" component={ListMensajes} />
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="AgendarCita" component={AgendarCitaScreen} />
+      <Stack.Screen name="Questionnaire" component={Questionnaire} />
     </Stack.Navigator>
   );
 };

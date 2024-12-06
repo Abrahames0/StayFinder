@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  ImageBackground,
-  Modal,
-} from "react-native";
+import {View, Text, TouchableOpacity, ScrollView, ActivityIndicator, ImageBackground, Modal} from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
 import { useAuthenticator } from "@aws-amplify/ui-react-native";
 import { Usuario, Alojamiento } from "@/src/models";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "@/app/navigation/Router";
+
 
 const AnunciosAnfitrionScreen: React.FC = () => {
   const { user, authStatus } = useAuthenticator();
@@ -20,6 +16,8 @@ const AnunciosAnfitrionScreen: React.FC = () => {
   const [selectedAd, setSelectedAd] = useState<Alojamiento | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
+
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const fetchUser = async () => {
     setLoading(true);
@@ -96,9 +94,12 @@ const AnunciosAnfitrionScreen: React.FC = () => {
       {/* Título y botón */}
       <View className="flex-row justify-between items-center px-4 mt-12 mb-2">
         <Text className="text-2xl font-bold text-gray-800">Tus anuncios creados</Text>
-        <TouchableOpacity className="w-10 h-10 rounded-full bg-purple-400 justify-center items-center border-2 border-purple-400">
-          <Ionicons name="add" size={24} color="#fff" />
-        </TouchableOpacity>
+        <TouchableOpacity
+        className="w-16 h-16 rounded-full bg-purple-400 justify-center items-center border-2 border-purple-400"
+        onPress={() => navigation.navigate('Questionnaire')}
+      >
+        <Ionicons name="add" size={30} color="#fff" />
+      </TouchableOpacity>
       </View>
 
       {/* Anuncios */}
