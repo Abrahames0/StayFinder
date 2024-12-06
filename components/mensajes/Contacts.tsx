@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, Image } from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
 import { Usuario, ChatRoom, Mensaje } from "@/src/models";
@@ -6,6 +6,7 @@ import { styled } from "nativewind";
 import { createChatRoom } from "@/components/mensajes/ChatUtils";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "@/app/navigation/Router";
+import { useUser } from "../hooks/UserContext";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -22,19 +23,14 @@ const Contacts: React.FC<Props> = ({ currentUserId , setinChat}) => {
   const [contacts, setContacts] = useState<Usuario[]>([]);
   const [messages, setMessages] = useState<Map<string, string>>(new Map()); // Guardar los últimos mensajes
 
-  if (!currentUserId) {
-    console.error("currentUserId no está definido");
-  }
-
   // Obtener contactos y el último mensaje enviado
-  useLayoutEffect(() => {
+  useEffect(() => {
     const fetchContacts = async () => {
       try {
         await DataStore.start();
         const currentUser = await DataStore.query(Usuario, currentUserId);
         if (!currentUser) {
           console.error("Usuario actual no encontrado");
-          return;
         }
 
         const targetType = currentUser.tipo === "ANFITRION" ? "ESTUDIANTE" : "ANFITRION";
@@ -57,6 +53,8 @@ const Contacts: React.FC<Props> = ({ currentUserId , setinChat}) => {
             const messages = await DataStore.query(Mensaje, (message) =>
               message.chatroomID.eq(chatRoom.id)
             );
+            console.log(messages);
+            
 
             // Si existen mensajes, obtener el último
             if (messages.length > 0) {
@@ -87,14 +85,20 @@ const Contacts: React.FC<Props> = ({ currentUserId , setinChat}) => {
 
       if (existingChatRoom) {
         setinChat(true);
+
+
         navigation.navigate("Mensajes", {
           chatRoomId: existingChatRoom.id,
           currentUserId,
           nameSelected
         });
+
+
       } else {
         const newChatRoom = await createChatRoom(currentUserId, selectedUserId);
         setinChat(true);
+
+
         navigation.navigate("Mensajes", {
           chatRoomId: newChatRoom.id,
           currentUserId,
@@ -135,6 +139,9 @@ const Contacts: React.FC<Props> = ({ currentUserId , setinChat}) => {
                 {messages.get(item.id) || "No hay mensajes"}
               </StyledText>
             </StyledView>
+            {/* //Agregar la logia para que en lugar de este numero apareza el numero de mesajes nuevos sin abrir el chatRoom */}
+            <StyledText className="text-sm text-red-500 p-4" > 3</StyledText>
+
             <StyledText className="text-sm text-[#DF96F9]">Ver</StyledText>
           </StyledTouchableOpacity>
         )}
