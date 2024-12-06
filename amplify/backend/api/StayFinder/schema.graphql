@@ -39,12 +39,14 @@ type Alojamiento @model @auth(rules: [{allow: public}]) {
   reservas: [Reserva] @hasMany(indexName: "byAlojamiento", fields: ["id"])
   esRecomendado: Boolean
   Usuario: Usuario @belongsTo(fields: ["usuarioID"])
-  banos: String
-  camas: String
-  wifi: String
-  tiempoRenta: String
+  banos: Float
+  camas: Float
+  tiempoRenta: Float
   usuarioID: ID! @index(name: "byUsuario")
   reglas: String
+  tipoAlojamiento: [String]
+  personas: [String]
+  servicios: [String]
 }
 
 type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {
