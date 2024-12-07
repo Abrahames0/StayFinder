@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, TouchableOpacity, Alert } from "react-native";
 import Step1 from "@/components/Anfrition/Step1";
 import Step2 from "@/components/Anfrition/Step2";
@@ -12,9 +12,16 @@ import { DataStore } from "@aws-amplify/datastore";
 import { Alojamiento, Usuario } from "@/src/models";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuthenticator } from "@aws-amplify/ui-react-native"; // Importa useAuthenticator
+import { uploadData } from 'aws-amplify/storage';
+import { useUserId } from "../../../components/hooks/UserId";
+import { useNavigation } from '@react-navigation/native'; // Importa el hook useNavigation
+
 
 const Questionnaire = () => {
   const { user } = useAuthenticator((context) => [context.user]); // Obtén el usuario autenticado
+  const { userId, loading, error } = useUserId(); // Obtén el ID usando el hook
+  const navigation = useNavigation(); // Usa el hook de navegación
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     titulo: "",
@@ -34,10 +41,24 @@ const Questionnaire = () => {
     time: 0,
     rules: "",
     tipoEstancia: "",
-    usuarioid: 'f1a3154e-e6f2-4dc2-92d0-1ecdc3d9d153',
+    usuarioid: "", // Inicializa como vacío
   });
 
+  // Establecer el ID del usuario cuando el hook lo obtenga
+  useEffect(() => {
+    if (userId) {
+      setFormData((prev) => ({ ...prev, usuarioid: userId }));
+    }
+  }, [userId]);
+
   const handleNext = () => {
+    if (step === 5 && formData.imagenes.length < 4) {
+      Alert.alert(
+        "Validación",
+        "Por favor, sube al menos 4 imágenes antes de continuar."
+      );
+      return;
+    }
     if (step === 1 && !formData.tipoEstancia) {
       Alert.alert("Validación", "Por favor, selecciona el tipo de estancia.");
       return;
@@ -60,6 +81,14 @@ const Questionnaire = () => {
   };
 
   const handleSubmit = async () => {
+    if (formData.imagenes.length < 4) {
+      Alert.alert(
+        "Validación",
+        "Por favor, asegúrate de subir al menos 4 imágenes del alojamiento."
+      );
+      return;
+    }
+  
     if (
       !formData.titulo ||
       !formData.descripcion ||
@@ -69,8 +98,25 @@ const Questionnaire = () => {
       Alert.alert("Validación", "Por favor, completa todos los campos requeridos.");
       return;
     }
-
+  
     try {
+      // Subir imágenes a S3
+      const uploadedImages = await Promise.all(
+        formData.imagenes.map(async (uri, index) => {
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          const filename = `imagen-${Date.now()}-${index}.jpg`;
+  
+          const result = await uploadData({
+            key: `${filename}`,
+            data: blob,
+          }).result;
+  
+          return `https://stayfinder-storage-771fbe21d527c-dev.s3.us-east-1.amazonaws.com/public/${result.key}`;
+        })
+      );
+  
+      // Guardar en DataStore
       await DataStore.save(
         new Alojamiento({
           titulo: formData.titulo,
@@ -85,18 +131,23 @@ const Questionnaire = () => {
           servicios: formData.servicios,
           usuarioID: formData.usuarioid,
           precioMensual: parseFloat(formData.precioMensual),
-          fotosAlojamiento: formData.imagenes,
+          fotosAlojamiento: uploadedImages,
           banos: formData.bathrooms,
           camas: formData.beds,
           reglas: formData.rules,
           tiempoRenta: formData.time,
         })
       );
+  
       Alert.alert("Éxito", "¡Cuestionario guardado exitosamente!");
+      navigation.navigate("TabsAnfitrion");
     } catch (error) {
       console.error("Error al guardar:", error);
       Alert.alert("Error", "Hubo un problema al guardar los datos.");
     }
+  };
+    const handleAddImage = (newImages: string[]) => {
+    setFormData((prev) => ({ ...prev, imagenes: newImages }));
   };
 
   const renderStep = () => {
@@ -133,10 +184,10 @@ const Questionnaire = () => {
       case 5:
         return (
           <Step5
-            onAddImage={(action: any) =>
-              handleChange("imagenes", [...formData.imagenes, `Nueva imagen ${action}`])
-            }
-          />
+          images={formData.imagenes} // Pasar las imágenes actuales
+          onAddImage={handleAddImage} // Actualizar las imágenes al agregar nuevas
+        />
+
         );
       case 6:
         return (

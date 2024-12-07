@@ -52,6 +52,8 @@ const AnunciosAnfitrionScreen: React.FC = () => {
       const alojamientos = await DataStore.query(Alojamiento, (a) =>
         a.usuarioID.eq(profileUser.id)
       );
+      console.log(alojamientos.fotosAlojamiento); 
+      
       setAds(alojamientos);
     } catch (error) {
       console.error("Error al obtener los alojamientos:", error);

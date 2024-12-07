@@ -9,6 +9,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import AgendarCitaScreen from "../screens/AgendarCitaScreen";
 import Questionnaire from "../screens/Anfritrion/Questionnaire";
+import AnunciosAnfitrionScreen from "../screens/Anfritrion/AnunciosAnfitrionScreen"; 
 
 export type RootStackParamList = {
   Tabs: undefined; // Navegación de pestañas
@@ -19,6 +20,7 @@ export type RootStackParamList = {
   TabsAnfitrion: undefined; // 
   AgendarCita: { property: any };
   Questionnaire: undefined;
+  Anuncios: undefined; 
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -37,6 +39,7 @@ const Router = ({ initialRoute = "Tabs" }: { initialRoute?: keyof RootStackParam
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="AgendarCita" component={AgendarCitaScreen} />
       <Stack.Screen name="Questionnaire" component={Questionnaire} />
+      <Stack.Screen name="Anuncios" component={AnunciosAnfitrionScreen} />
     </Stack.Navigator>
   );
 };
