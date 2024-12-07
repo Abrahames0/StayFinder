@@ -19,12 +19,17 @@ const Questionnaire = () => {
   const [formData, setFormData] = useState({
     titulo: "",
     descripcion: "",
-    direccion: "",
     imagenes: [] as string[],
     personas: [] as string[],
     servicios: [] as string[],
     precioMensual: "",
     bathrooms: 0,
+    direccion:'',
+    ciudad: '',
+    estado:'',
+    codigoPostal: '',
+    latitud: 0,
+    longitud: 0,
     beds: 0,
     time: 0,
     rules: "",
@@ -70,6 +75,12 @@ const Questionnaire = () => {
         new Alojamiento({
           titulo: formData.titulo,
           descripcion: formData.descripcion,
+          direccion: formData.direccion,
+          ciudad: formData.ciudad,
+          estado: formData.estado,
+          codigoPostal: formData.codigoPostal,
+          latitud: formData.latitud,
+          longitud: formData.longitud,
           personas: formData.personas,
           servicios: formData.servicios,
           usuarioID: formData.usuarioid,
@@ -92,13 +103,21 @@ const Questionnaire = () => {
     switch (step) {
       case 1:
         return <Step1 onChange={(value) => handleChange("tipoEstancia", value)} />;
-      case 2:
-        return (
-          <Step2
-            value={formData.direccion}
-            onChange={(value) => handleChange("direccion", value)}
-          />
-        );
+        case 2:
+          return (
+            <Step2
+              value={{
+                direccion: formData.direccion,
+                ciudad: formData.ciudad,
+                estado: formData.estado,
+                codigoPostal: formData.codigoPostal,
+                latitud: formData.latitud,
+                longitud: formData.longitud,
+              }}
+              onChange={(key, value) => handleChange(key, value)}
+            />
+          );
+        
       case 3:
         return (
           <Step3

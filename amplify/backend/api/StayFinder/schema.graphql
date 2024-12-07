@@ -44,9 +44,15 @@ type Alojamiento @model @auth(rules: [{allow: public}]) {
   tiempoRenta: Float
   usuarioID: ID! @index(name: "byUsuario")
   reglas: String
-  tipoAlojamiento: [String]
+  tipoAlojamiento: String
   personas: [String]
   servicios: [String]
+  direccion: String
+  ciudad: String
+  estado: String
+  codigoPostal: String
+  latitud: Float
+  longitud: Float
 }
 
 type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {
@@ -62,18 +68,6 @@ type Usuario @model @auth(rules: [{allow: public}, {allow: private}]) {
   edad: String
   Mensajes: [Mensaje] @hasMany(indexName: "byUsuario", fields: ["id"])
   ChatRooms: [ChatRoom] @manyToMany(relationName: "UsuarioChatRoom")
-}
-
-type Ubicacion @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  direccion: String
-  ciudad: String
-  estado: String
-  codigoPostal: String
-  latitud: Float
-  longitud: Float
-  Alojamiento: Alojamiento @hasOne
-  AlojamientoID: String
 }
 
 enum TipoUsuario {

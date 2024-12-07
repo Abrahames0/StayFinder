@@ -141,9 +141,15 @@ type EagerAlojamiento = {
   readonly tiempoRenta?: number | null;
   readonly usuarioID: string;
   readonly reglas?: string | null;
-  readonly tipoAlojamiento?: (string | null)[] | null;
+  readonly tipoAlojamiento?: string | null;
   readonly personas?: (string | null)[] | null;
   readonly servicios?: (string | null)[] | null;
+  readonly direccion?: string | null;
+  readonly ciudad?: string | null;
+  readonly estado?: string | null;
+  readonly codigoPostal?: string | null;
+  readonly latitud?: number | null;
+  readonly longitud?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -166,9 +172,15 @@ type LazyAlojamiento = {
   readonly tiempoRenta?: number | null;
   readonly usuarioID: string;
   readonly reglas?: string | null;
-  readonly tipoAlojamiento?: (string | null)[] | null;
+  readonly tipoAlojamiento?: string | null;
   readonly personas?: (string | null)[] | null;
   readonly servicios?: (string | null)[] | null;
+  readonly direccion?: string | null;
+  readonly ciudad?: string | null;
+  readonly estado?: string | null;
+  readonly codigoPostal?: string | null;
+  readonly latitud?: number | null;
+  readonly longitud?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -225,50 +237,6 @@ export declare type Usuario = LazyLoading extends LazyLoadingDisabled ? EagerUsu
 
 export declare const Usuario: (new (init: ModelInit<Usuario>) => Usuario) & {
   copyOf(source: Usuario, mutator: (draft: MutableModel<Usuario>) => MutableModel<Usuario> | void): Usuario;
-}
-
-type EagerUbicacion = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Ubicacion, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly direccion?: string | null;
-  readonly ciudad?: string | null;
-  readonly estado?: string | null;
-  readonly codigoPostal?: string | null;
-  readonly latitud?: number | null;
-  readonly longitud?: number | null;
-  readonly Alojamiento?: Alojamiento | null;
-  readonly AlojamientoID?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly ubicacionAlojamientoId?: string | null;
-}
-
-type LazyUbicacion = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Ubicacion, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly direccion?: string | null;
-  readonly ciudad?: string | null;
-  readonly estado?: string | null;
-  readonly codigoPostal?: string | null;
-  readonly latitud?: number | null;
-  readonly longitud?: number | null;
-  readonly Alojamiento: AsyncItem<Alojamiento | undefined>;
-  readonly AlojamientoID?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly ubicacionAlojamientoId?: string | null;
-}
-
-export declare type Ubicacion = LazyLoading extends LazyLoadingDisabled ? EagerUbicacion : LazyUbicacion
-
-export declare const Ubicacion: (new (init: ModelInit<Ubicacion>) => Ubicacion) & {
-  copyOf(source: Ubicacion, mutator: (draft: MutableModel<Ubicacion>) => MutableModel<Ubicacion> | void): Ubicacion;
 }
 
 type EagerUsuarioChatRoom = {
