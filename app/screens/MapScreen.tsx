@@ -1,12 +1,33 @@
-import React, { useState } from "react";
-import { View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { DataStore } from "@aws-amplify/datastore";
+import { Alojamiento } from "@/src/models";
 import SearchBar from "@/components/SearchBar";
 import FiltersModal from "@/components/FiltersModal";
 
 const MapScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [alojamientos, setAlojamientos] = useState<Alojamiento[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAlojamientos = async () => {
+      try {
+        setLoading(true);
+        const alojamientosData = await DataStore.query(Alojamiento);
+        setAlojamientos(alojamientosData);
+        console.log("Alojamientos cargados:", alojamientosData);
+      } catch (error) {
+        console.error("Error al cargar los alojamientos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAlojamientos();
+  }, []);
 
   const openFilters = () => setFiltersVisible(true);
   const closeFilters = () => setFiltersVisible(false);
@@ -14,7 +35,7 @@ const MapScreen = () => {
   const applyFilters = () => {
     console.log("Filtros aplicados");
     closeFilters();
-  }
+  };
 
   const clearFilters = () => {
     console.log("Quitar filtros");
@@ -22,10 +43,18 @@ const MapScreen = () => {
 
   const region = {
     latitude: 21.157654,
-    longitude: -100.933034,
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
+    longitude: -101.933034,
+    latitudeDelta: 0.04,
+    longitudeDelta: 0.04,
   };
+
+  const filteredAlojamientos = alojamientos.filter(
+    (alojamiento) =>
+      alojamiento.latitud !== null &&
+      alojamiento.longitud !== null &&
+      typeof alojamiento.latitud === "number" &&
+      typeof alojamiento.longitud === "number"
+  );
 
   return (
     <View className="flex-1">
@@ -35,33 +64,37 @@ const MapScreen = () => {
         onChangeText={setSearchQuery}
         onFilterPress={openFilters}
       />
-    
-    <FiltersModal
+
+      <FiltersModal
         visible={filtersVisible}
         onClose={closeFilters}
         onApplyFilters={applyFilters}
         onClearFilters={clearFilters}
       />
 
-      {/* Mapa */}
-      <View className="flex-1">
+      {loading ? (
+        <View className="flex-1 justify-center items-center">
+          <Text>Cargando alojamientos...</Text>
+        </View>
+      ) : (
         <MapView
-          initialRegion={region}
-          style={{ flex: 1 }} // Usa `style` en lugar de `className`
+          
+          style={{ flex: 1 }}
         >
-          <Marker
-            coordinate={{ latitude: 21.157654, longitude: -100.933034 }}
-            title="Centro de Dolores Hidalgo"
-            description="Un lugar histórico y cultural."
-          />
-          <Marker
-            coordinate={{ latitude: 21.153654, longitude: -100.930034 }}
-            title="Ex Hacienda de la Erre"
-            description="Lugar turístico."
-            pinColor="#D92AD9"
-          />
+          {filteredAlojamientos.map((alojamiento) => (
+            <Marker
+              key={alojamiento.id}
+              coordinate={{
+                latitude: alojamiento.latitud!,
+                longitude: alojamiento.longitud!,
+              }}
+              title={alojamiento.titulo || "Sin título"}
+              description={`Precio: $${alojamiento.precioMensual ?? "No disponible"}`}
+              pinColor="#D92AD9"
+            />
+          ))}
         </MapView>
-      </View>
+      )}
     </View>
   );
 };

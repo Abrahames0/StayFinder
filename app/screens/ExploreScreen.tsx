@@ -6,7 +6,7 @@ import { DataStore } from "@aws-amplify/datastore";
 import PropertyCard from "@/components/PropertyCard";
 import SearchBarExplore from "@/components/SearchBarExplore";
 import RecommendationsList from "@/components/RecommendationsList";
-import AdBanner from "@/components/AdBanner"; // Opcional, para intercalar anuncios
+import AdBanner from "@/components/AdBanner";
 import { Alojamiento } from "@/src/models";
 import PropertyModal from "@/components/PropertyModal";
 
@@ -22,18 +22,54 @@ const ExploreScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<Alojamiento | null>(null);
 
-  const [slideAnim] = useState(new Animated.Value(0)); // Animación de deslizamiento desde abajo
+  const [slideAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const subscription = DataStore.observe(Alojamiento).subscribe((msg) => {
+      console.log("Cambio detectado:", msg);
+
+      setAlojamientos((prev) => {
+        switch (msg.opType) {
+          case "INSERT":
+            return [msg.element, ...prev];
+          case "UPDATE":
+            return prev.map((item) =>
+              item.id === msg.element.id ? msg.element : item
+            );
+          case "DELETE":
+            return prev.filter((item) => item.id !== msg.element.id);
+          default:
+            return prev;
+        }
+      });
+
+      if (msg.element.esRecomendado) {
+        setRecomendados((prev) =>
+          prev.some((item) => item.id === msg.element.id)
+            ? prev.map((item) =>
+                item.id === msg.element.id ? msg.element : item
+              )
+            : [msg.element, ...prev]
+        );
+      }
+    });
+
+    loadAlojamientos();
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const loadAlojamientos = async (isRefresh = false) => {
     try {
       if (!isRefresh) setIsLoading(true);
       else setIsRefreshing(true);
-  
+
       const result = await DataStore.query(Alojamiento);
-  
+      
+
       const recomendadosList = result.filter((item) => item.esRecomendado);
       setRecomendados(recomendadosList);
-  
+
       const agregadosRecientemente = result.filter(
         (item) => !item.esRecomendado
       );
@@ -64,42 +100,6 @@ const ExploreScreen = () => {
         useNativeDriver: true,
       }).start(() => setModalVisible(false));
     };        
-
-  useEffect(() => {
-    const subscription = DataStore.observe(Alojamiento).subscribe((msg) => {
-      console.log("Cambio detectado:", msg);
-
-      setAlojamientos((prev) => {
-        switch (msg.opType) {
-          case "INSERT":
-            return [msg.element, ...prev];
-          case "UPDATE":
-            return prev.map((item) =>
-              item.id === msg.element.id ? msg.element : item
-            );
-          case "DELETE":
-            return prev.filter((item) => item.id !== msg.element.id);
-          default:
-            return prev;
-        }
-      });
-
-      // También actualizar los recomendados
-      if (msg.element.esRecomendado) {
-        setRecomendados((prev) =>
-          prev.some((item) => item.id === msg.element.id)
-            ? prev.map((item) =>
-                item.id === msg.element.id ? msg.element : item
-              )
-            : [msg.element, ...prev]
-        );
-      }
-    });
-
-    loadAlojamientos(); // Carga inicial
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const renderItem = ({ item }: { item: Alojamiento }) => {
     const title = item.titulo ?? "Título no disponible";
@@ -158,17 +158,16 @@ const ExploreScreen = () => {
 
   const combinedData = () => {
     const data = [];
-    const chunkSize = 4; // Número de propiedades antes de mostrar recomendaciones o anuncios
+    const chunkSize = 4; 
 
     for (let i = 0; i < alojamientos.length; i += chunkSize) {
       const chunk = alojamientos.slice(i, i + chunkSize);
       data.push(...chunk.map((property) => ({ type: "property", data: property })));
 
-      // Intercalar una lista horizontal de recomendados después de cada bloque
       if (recomendados.length > 0) {
         data.push({
           type: "recommendation",
-          data: recomendados.slice(0, 5), // Solo muestra 5 recomendados
+          data: recomendados.slice(0, 5), 
         });
       }
 
