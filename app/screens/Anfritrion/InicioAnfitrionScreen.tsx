@@ -5,12 +5,14 @@ import { Reserva, Alojamiento } from '@/src/models';
 import { styled } from 'nativewind';
 import AllReservationsScreen from '@/components/AllReservationsScreen';
 import { useUser } from '@/components/hooks/UserContext';
+import { RootStackParamList } from '@/app/navigation/Router';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from 'expo-router';
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
 const StyledTouchable = styled(TouchableOpacity);
 
-// Tipo extendido para incluir alojamientoImage
 type ExtendedReserva = Reserva & { alojamientoImage: string, name: string , banos:string , camas:string};
 
 const ReservationsScreen = () => {
@@ -18,6 +20,8 @@ const ReservationsScreen = () => {
   const [reservations, setReservations] = useState<ExtendedReserva[]>([]);
   const [filteredReservations, setFilteredReservations] = useState<ExtendedReserva[]>([]);
   const [filter, setFilter] = useState<'PENDIENTE' | 'CONFIRMADA' | 'CANCELADA'>('PENDIENTE');
+
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     const fetchReservationsWithAlojamiento = async () => {
@@ -42,7 +46,7 @@ const ReservationsScreen = () => {
       console.log(reservationsWithAlojamiento);
       
   
-      setReservations(reservationsWithAlojamiento as ExtendedReserva[]); // Asegura que el tipo sea consistente
+      setReservations(reservationsWithAlojamiento as ExtendedReserva[]);
       setFilteredReservations(reservationsWithAlojamiento as ExtendedReserva[]);
     };
   
@@ -50,20 +54,14 @@ const ReservationsScreen = () => {
   }, []);
   
 
-  // Filtro de reservaciones
   useEffect(() => {
     setFilteredReservations(reservations.filter((res) => res.estado === filter));
   }, [filter, reservations]);
 
-  const handleCreateReserv = () => {
-    // Función de ejemplo
-  };
-
-  // Renderizar cada reservación
   const renderReservation = ({ item }: { item: ExtendedReserva }) => (
     <StyledView className="flex-row p-4 bg-white rounded-lg shadow mb-4 border  border-black">
       <Image
-        source={{ uri: item.alojamientoImage }} // Usar el campo correcto
+        source={{ uri: item.alojamientoImage }}
         className="w-20 h-30    rounded-lg"
       />
       <StyledView className="ml-4 flex-1">
@@ -83,7 +81,7 @@ const ReservationsScreen = () => {
       <StyledText className="text-2xl font-bold text-center">{user?.nombre}</StyledText>
       <View className="mt-8 items-center mb-4">
         <TouchableOpacity
-          onPress={handleCreateReserv}
+          onPress={() => navigation.navigate('Questionnaire')}
           className="flex-row items-center justify-center rounded-full px-6 py-3 w-52 border border-black shadow-md"
           style={{ backgroundColor: 'white' }}
         >

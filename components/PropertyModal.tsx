@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from "@/app/navigation/Router";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-
 interface PropertyModalProps {
   visible: boolean;
   onClose: () => void;

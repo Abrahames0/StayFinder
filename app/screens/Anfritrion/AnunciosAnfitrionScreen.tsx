@@ -95,7 +95,7 @@ const AnunciosAnfitrionScreen: React.FC = () => {
       <View className="flex-row justify-between items-center px-4 mt-12 mb-2">
         <Text className="text-2xl font-bold text-gray-800">Tus anuncios creados</Text>
         <TouchableOpacity
-        className="w-16 h-16 rounded-full bg-purple-400 justify-center items-center border-2 border-purple-400"
+        className="w-14 h-14 rounded-full bg-purple-400 justify-center items-center border-2 border-purple-400"
         onPress={() => navigation.navigate('Questionnaire')}
       >
         <Ionicons name="add" size={30} color="#fff" />
