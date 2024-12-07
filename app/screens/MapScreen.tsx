@@ -1,15 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import React, { useState, useEffect } from "react";
+import { View } from "react-native";
+import MapView from "react-native-maps";
 import { DataStore } from "@aws-amplify/datastore";
 import { Alojamiento } from "@/src/models";
 import SearchBar from "@/components/SearchBar";
 import FiltersModal from "@/components/FiltersModal";
+import zonasDeInteresJson from "@/data/zonasDeInteres.json";
+import Markers from "@/components/Markers";
+import FloatingCard from "@/components/FloatingCard";
+import LoadingIndicator from "@/components/LoadingIndicator";
+
+// Tipos para las zonas de interés
+interface Zona {
+  id: string;
+  nombre: string;
+  descripcion: string;
+  latitud: number;
+  longitud: number;
+}
+
+interface ZonasDeInteres {
+  recreacion: Zona[];
+  residenciales: Zona[];
+  transporte: Zona[];
+  servicios: Zona[];
+  cafeterias: Zona[];
+  papelerias: Zona[];
+  lavanderias: Zona[];
+}
+
+const zonasDeInteres: ZonasDeInteres = zonasDeInteresJson.zonasDeInteres;
 
 const MapScreen = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState<(keyof ZonasDeInteres)[]>([]);
   const [alojamientos, setAlojamientos] = useState<Alojamiento[]>([]);
+  const [selectedAlojamiento, setSelectedAlojamiento] = useState<Alojamiento | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,7 +45,6 @@ const MapScreen = () => {
         setLoading(true);
         const alojamientosData = await DataStore.query(Alojamiento);
         setAlojamientos(alojamientosData);
-        console.log("Alojamientos cargados:", alojamientosData);
       } catch (error) {
         console.error("Error al cargar los alojamientos:", error);
       } finally {
@@ -29,71 +55,56 @@ const MapScreen = () => {
     fetchAlojamientos();
   }, []);
 
-  const openFilters = () => setFiltersVisible(true);
-  const closeFilters = () => setFiltersVisible(false);
-
-  const applyFilters = () => {
-    console.log("Filtros aplicados");
-    closeFilters();
-  };
-
-  const clearFilters = () => {
-    console.log("Quitar filtros");
-  };
-
   const region = {
-    latitude: 21.157654,
-    longitude: -101.933034,
+    latitude: 21.157065,
+    longitude: -100.934967,
     latitudeDelta: 0.04,
     longitudeDelta: 0.04,
   };
 
-  const filteredAlojamientos = alojamientos.filter(
-    (alojamiento) =>
-      alojamiento.latitud !== null &&
-      alojamiento.longitud !== null &&
-      typeof alojamiento.latitud === "number" &&
-      typeof alojamiento.longitud === "number"
-  );
+  const getFilteredMarkers = (): Zona[] => {
+    if (selectedCategories.length === 0) return [];
+    return selectedCategories.flatMap((category) => zonasDeInteres[category]);
+  };
 
   return (
     <View className="flex-1">
       <SearchBar
-        placeholder="  ¿Qué tipo de estancia buscas?"
+        placeholder="¿Qué tipo de estancia buscas?"
         value={searchQuery}
         onChangeText={setSearchQuery}
-        onFilterPress={openFilters}
+        onFilterPress={() => setFiltersVisible(true)}
       />
 
       <FiltersModal
         visible={filtersVisible}
-        onClose={closeFilters}
-        onApplyFilters={applyFilters}
-        onClearFilters={clearFilters}
+        onClose={() => setFiltersVisible(false)}
+        onApplyFilters={(selected) => {
+          setSelectedCategories(selected as (keyof ZonasDeInteres)[]);
+          setFiltersVisible(false);
+        }}
+        onClearFilters={() => {
+          setSelectedCategories([]);
+          setFiltersVisible(false);
+        }}
       />
 
       {loading ? (
-        <View className="flex-1 justify-center items-center">
-          <Text>Cargando alojamientos...</Text>
-        </View>
+        <LoadingIndicator message="Cargando alojamientos..." />
       ) : (
-        <MapView
-          
-          style={{ flex: 1 }}
-        >
-          {filteredAlojamientos.map((alojamiento) => (
-            <Marker
-              key={alojamiento.id}
-              coordinate={{
-                latitude: alojamiento.latitud!,
-                longitude: alojamiento.longitud!,
-              }}
-              title={alojamiento.titulo || "Sin título"}
-              description={`Precio: $${alojamiento.precioMensual ?? "No disponible"}`}
-              pinColor="#D92AD9"
-            />
-          ))}
+        <MapView initialRegion={region} style={{ flex: 1 }}>
+          {/* Marcadores */}
+          <Markers
+            alojamientos={alojamientos}
+            zonas={getFilteredMarkers()}
+            onSelectAlojamiento={setSelectedAlojamiento}
+          />
         </MapView>
+      )}
+
+      {/* Tarjeta flotante */}
+      {selectedAlojamiento && (
+        <FloatingCard alojamiento={selectedAlojamiento} onClose={() => setSelectedAlojamiento(null)} />
       )}
     </View>
   );

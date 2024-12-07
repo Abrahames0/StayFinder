@@ -1,0 +1,180 @@
+{
+    "zonasDeInteres": {
+      "recreacion": [
+        {
+          "id": "1",
+          "nombre": "Centro Histórico",
+          "descripcion": "Corazón cultural de la ciudad, con acceso a servicios, transporte y lugares recreativos.",
+          "latitud": 21.157910,
+          "longitud": -100.932930
+        },
+        {
+          "id": "2",
+          "nombre": "Jardín Principal",
+          "descripcion": "Plaza central, excelente para socializar y relajarse.",
+          "latitud": 21.157222,
+          "longitud": -100.932500
+        },
+        {
+          "id": "3",
+          "nombre": "Parque La Alameda",
+          "descripcion": "Zona verde popular para deportes y caminatas.",
+          "latitud": 21.161500,
+          "longitud": -100.934200
+        },
+        {
+          "id": "4",
+          "nombre": "Museo de la Independencia",
+          "descripcion": "Museo histórico en el corazón de Dolores Hidalgo.",
+          "latitud": 21.158100,
+          "longitud": -100.932300
+        }
+      ],
+      "residenciales": [
+        {
+          "id": "5",
+          "nombre": "Residencial El Refugio",
+          "descripcion": "Zona residencial tranquila y segura, ideal para estudiantes que buscan un ambiente relajado.",
+          "latitud": 21.164700,
+          "longitud": -100.930600
+        },
+        {
+          "id": "6",
+          "nombre": "Fraccionamiento Las Cruces",
+          "descripcion": "Área moderna con acceso a servicios básicos y zonas tranquilas.",
+          "latitud": 21.152500,
+          "longitud": -100.925000
+        },
+        {
+          "id": "7",
+          "nombre": "Colonia La Esperanza",
+          "descripcion": "Zona con viviendas económicas y tranquila.",
+          "latitud": 21.155500,
+          "longitud": -100.939200
+        },
+        {
+          "id": "8",
+          "nombre": "Colonia Las Huertas",
+          "descripcion": "Área residencial cercana al Instituto Tecnológico.",
+          "latitud": 21.153800,
+          "longitud": -100.940000
+        }
+      ],
+      "transporte": [
+        {
+          "id": "9",
+          "nombre": "Terminal de Autobuses de Dolores Hidalgo",
+          "descripcion": "Ideal para estudiantes que viajan frecuentemente a otras ciudades.",
+          "latitud": 21.160556,
+          "longitud": -100.936667
+        },
+        {
+          "id": "10",
+          "nombre": "Parada de Transporte Público Central",
+          "descripcion": "Punto central de transporte público dentro del centro histórico.",
+          "latitud": 21.157500,
+          "longitud": -100.933300
+        }
+      ],
+      "servicios": [
+        {
+          "id": "11",
+          "nombre": "Mercado Dolores Hidalgo",
+          "descripcion": "Área con acceso a alimentos frescos y económicos, popular entre estudiantes.",
+          "latitud": 21.157000,
+          "longitud": -100.932000
+        },
+        {
+          "id": "12",
+          "nombre": "Avenida Norteamérica",
+          "descripcion": "Zona comercial con supermercados y servicios esenciales.",
+          "latitud": 21.160250,
+          "longitud": -100.933200
+        },
+        {
+          "id": "13",
+          "nombre": "Plaza Cívica",
+          "descripcion": "Área con bancos, tiendas y servicios básicos.",
+          "latitud": 21.158200,
+          "longitud": -100.933600
+        },
+        {
+          "id": "14",
+          "nombre": "Tiendas de Conveniencia Oxxo",
+          "descripcion": "Tiendas convenientes para compras rápidas en diferentes puntos de la ciudad.",
+          "latitud": 21.157800,
+          "longitud": -100.935100
+        }
+      ],
+      "cafeterias": [
+        {
+          "id": "15",
+          "nombre": "Café del Jardín",
+          "descripcion": "Cafetería popular cerca del Jardín Principal, ideal para estudiar o relajarse.",
+          "latitud": 21.157500,
+          "longitud": -100.932800
+        },
+        {
+          "id": "16",
+          "nombre": "La Esquina del Café",
+          "descripcion": "Cafetería tranquila con buen café y wifi.",
+          "latitud": 21.156900,
+          "longitud": -100.933500
+        },
+        {
+          "id": "17",
+          "nombre": "Café Cultura",
+          "descripcion": "Lugar acogedor para disfrutar un café y trabajar en proyectos.",
+          "latitud": 21.158300,
+          "longitud": -100.933200
+        }
+      ],
+      "papelerias": [
+        {
+          "id": "18",
+          "nombre": "Papelería Central",
+          "descripcion": "Papelería con amplia variedad de artículos escolares y de oficina.",
+          "latitud": 21.157800,
+          "longitud": -100.933000
+        },
+        {
+          "id": "19",
+          "nombre": "Papelería La Estrella",
+          "descripcion": "Papelería cerca del centro histórico.",
+          "latitud": 21.157300,
+          "longitud": -100.932400
+        },
+        {
+          "id": "20",
+          "nombre": "Papelería El Estudiante",
+          "descripcion": "Papelería económica cercana a zonas residenciales.",
+          "latitud": 21.155600,
+          "longitud": -100.938700
+        }
+      ],
+      "lavanderias": [
+        {
+          "id": "21",
+          "nombre": "Lavandería Limpieza Total",
+          "descripcion": "Lavandería económica con servicio rápido.",
+          "latitud": 21.157600,
+          "longitud": -100.934500
+        },
+        {
+          "id": "22",
+          "nombre": "Lavandería El Sol",
+          "descripcion": "Lavandería con precios accesibles y cerca del centro.",
+          "latitud": 21.158400,
+          "longitud": -100.933000
+        },
+        {
+          "id": "23",
+          "nombre": "Lavandería Rápida",
+          "descripcion": "Lavandería con servicio de autoservicio y buena ubicación.",
+          "latitud": 21.156900,
+          "longitud": -100.934000
+        }
+      ]
+    }
+  }
+  

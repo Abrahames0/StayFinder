@@ -40,7 +40,6 @@ const Step2: React.FC<Step2Props> = ({ value, onChange }) => {
 
     setMarker({ latitude: lat, longitude: lng });
 
-    // Autocompleta dirección, pero el usuario puede ajustarla manualmente
     onChange("direccion", data.description);
     onChange("latitud", lat);
     onChange("longitud", lng);
@@ -55,14 +54,6 @@ const Step2: React.FC<Step2Props> = ({ value, onChange }) => {
     onChange("longitud", longitude);
   };
 
-  const validateFields = () => {
-    if (!value.direccion || !value.ciudad || !value.estado || !value.codigoPostal) {
-      Alert.alert("Validación", "Por favor, completa todos los campos requeridos.");
-      return false;
-    }
-    return true;
-  };
-
   return (
     <View className="flex-1 px-4 py-2">
       <Text className="text-2xl font-semibold mb-3">
@@ -75,18 +66,31 @@ const Step2: React.FC<Step2Props> = ({ value, onChange }) => {
           placeholder="Ingrese la dirección completa"
           minLength={2}
           fetchDetails={true}
-          onPress={handleLocationSelect}
+          onPress={(data, details = null) => {
+            if (details) {
+              const { lat, lng } = details.geometry.location;
+              console.log("Detalles del lugar:", details);
+              console.log("Latitud:", lat, "Longitud:", lng);
+            } else {
+              console.error("No se obtuvieron los detalles del lugar.");
+            }
+          }}
           query={{
+            /* key: "AIzaSyBJTE_SzlNmJYJFKShQYwoLU77H_x236IA", */
             language: "es",
             region: "mx",
           }}
           styles={{
+            container: {
+              flex: 1,
+            },
             textInput: {
               flex: 1,
               fontSize: 16,
               height: 40,
             },
           }}
+          /* onFail={(error) => console.error("Error en GooglePlacesAutocomplete:", error)} */
         />
         <Ionicons
           name="location-outline"
@@ -95,6 +99,7 @@ const Step2: React.FC<Step2Props> = ({ value, onChange }) => {
           className="ml-2"
         />
       </View>
+
 
       <Text className="text-gray-400 text-justify mb-3">
         Si la ubicación del alojamiento no aparece en el buscador, puedes agregarla manualmente.
